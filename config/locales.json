@@ -1,6 +1,7 @@
 {
   "default": "en",
-  "translationsPath": "/config/translations",
+  "translationsPath": "/i18n/translations",
+  "translationsFallbackPath": "/config/translations",
   "preview": {
     "queryParam": "locale",
     "storageKey": "hlx-locale"

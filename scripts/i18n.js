@@ -1,6 +1,6 @@
 /**
- * Domain-based i18n from repo JSON (config/translations.json).
- * Authors enter translation keys in content; strings are resolved at runtime.
+ * Domain-based i18n: AEM-published spreadsheet (primary) + repo JSON (fallback).
+ * Authors enter translation keys in AEM content; strings resolve at runtime.
  */
 
 const KEY_PATTERN = /^[a-z][\w-]*(?:\.[a-z][\w-]*)+$/i;
@@ -26,7 +26,12 @@ export async function loadLocalesConfig() {
   } catch (e) {
     // fall through to defaults
   }
-  localesConfig = { default: 'en', translationsPath: '/config/translations', domains: {} };
+  localesConfig = {
+    default: 'en',
+    translationsPath: '/i18n/translations',
+    translationsFallbackPath: '/config/translations',
+    domains: {},
+  };
   return localesConfig;
 }
 
@@ -167,7 +172,21 @@ export function parseTranslationsJson(json, locale) {
 }
 
 /**
- * Fetches translation dictionary for a locale from config/translations.json.
+ * @param {string} url
+ * @returns {Promise<object|null>}
+ */
+async function fetchTranslationsJson(url) {
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) return null;
+    return resp.json();
+  } catch (e) {
+    return null;
+  }
+}
+
+/**
+ * Fetches dictionary: repo fallback merged under AEM spreadsheet (AEM wins on conflict).
  * @param {string} locale
  * @returns {Promise<Record<string, string>>}
  */
@@ -176,32 +195,31 @@ export async function loadDictionary(locale) {
 
   const config = await loadLocalesConfig();
   const base = window.hlx?.codeBasePath || '';
-  const path = config.translationsPath || '/config/translations';
-  const url = `${base}${path}.json`;
+  const aemPath = config.translationsPath || '/i18n/translations';
+  const fallbackPath = config.translationsFallbackPath || '/config/translations';
 
-  try {
-    const resp = await fetch(url);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const json = await resp.json();
-    const dict = parseTranslationsJson(json, locale);
-    dictionaryCache[locale] = dict;
-    if (Object.keys(dict).length === 0) {
-      // eslint-disable-next-line no-console
-      console.warn(`[i18n] Dictionary loaded but no strings for locale "${locale}". Check config/translations.json.`);
-    }
-    return dict;
-  } catch (e) {
-    if (!warnedMissingDictionary) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        `[i18n] Could not load ${url}. Add config/translations.json and push to main. `,
-        e.message,
-      );
-      warnedMissingDictionary = true;
-    }
-    dictionaryCache[locale] = {};
-    return dictionaryCache[locale];
+  const [fallbackJson, aemJson] = await Promise.all([
+    fetchTranslationsJson(`${base}${fallbackPath}.json`),
+    fetchTranslationsJson(`${base}${aemPath}.json`),
+  ]);
+
+  const dictFallback = fallbackJson ? parseTranslationsJson(fallbackJson, locale) : {};
+  const dictAem = aemJson ? parseTranslationsJson(aemJson, locale) : {};
+  const dict = { ...dictFallback, ...dictAem };
+
+  dictionaryCache[locale] = dict;
+
+  if (Object.keys(dict).length === 0 && !warnedMissingDictionary) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[i18n] No translations for locale "${locale}". `
+      + `Publish /content/aem-eds-poc/translations in AEM (${aemPath}.json) `
+      + `or add ${fallbackPath}.json in Git.`,
+    );
+    warnedMissingDictionary = true;
   }
+
+  return dict;
 }
 
 /**

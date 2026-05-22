@@ -1,8 +1,12 @@
 import {
   clearDictionaryCache,
   getLocale,
+  loadDictionary,
   loadLocalesConfig,
+  translateKey,
 } from './i18n.js';
+
+const LANGUAGE_LABEL_KEY = 'nav.language';
 
 const PREVIEW_HOST_PATTERN = /\.(aem\.page|aem\.live|hlx\.page|hlx\.live)$/;
 
@@ -80,6 +84,8 @@ export async function decorateLanguageSwitcher(container) {
   if (languages.length < 2) return null;
 
   const currentLocale = await getLocale();
+  const dict = await loadDictionary(currentLocale);
+  const languageLabel = translateKey(LANGUAGE_LABEL_KEY, dict) || 'Language';
 
   const wrapper = document.createElement('div');
   wrapper.className = 'language-switcher';
@@ -87,12 +93,12 @@ export async function decorateLanguageSwitcher(container) {
   const label = document.createElement('label');
   label.className = 'language-switcher-label';
   label.setAttribute('for', 'language-switcher-select');
-  label.textContent = 'nav.language';
+  label.textContent = languageLabel;
 
   const select = document.createElement('select');
   select.id = 'language-switcher-select';
   select.className = 'language-switcher-select';
-  select.setAttribute('aria-label', 'Language');
+  select.setAttribute('aria-label', languageLabel);
 
   languages.forEach((lang) => {
     const option = document.createElement('option');

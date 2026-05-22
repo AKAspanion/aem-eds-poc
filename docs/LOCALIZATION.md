@@ -1,10 +1,34 @@
-# Localization (repo dictionary + domain locale)
+# Localization (AEM spreadsheet + repo fallback)
 
-This project resolves **translation keys** in page content using **`config/translations.json`** in Git. The active language is chosen from the **hostname** (or `?locale=` on preview). No AEM spreadsheet publish is required.
+Authors enter **translation keys** in AEM page content (hero, nav fragment, title, etc.). At runtime, `scripts/i18n.js` resolves keys using:
 
-## Translation dictionary (`config/translations.json`)
+| Source | URL | When |
+|--------|-----|------|
+| **Primary** | `/i18n/translations.json` | AEM spreadsheet Quick Publish (`/content/aem-eds-poc/translations`) |
+| **Fallback** | `/config/translations.json` | Git deploy until AEM publish works |
 
-Edit this file when adding or changing copy. Structure:
+AEM values **override** the repo fallback for the same key. The language switcher label (`nav.language`) uses the same dictionary.
+
+Active language: **hostname** or `?locale=` on preview (`config/locales.json`).
+
+## AEM translations spreadsheet (primary)
+
+1. **Sites** → `/content/aem-eds-poc/` → **Create** → **Spreadsheet** → title `translations`
+2. Columns: `key`, `en`, `fr`, `de`, … (see `docs/i18n-translations-sample.csv`)
+3. **Quick Publish** the spreadsheet page
+4. `paths.json` maps: `/content/aem-eds-poc/translations:/i18n/translations`
+
+Verify:
+
+```bash
+curl -I "https://main--aem-eds-poc--<org>.aem.page/i18n/translations.json"
+```
+
+Expect **200** with `data` rows after publish.
+
+## Repo fallback (`config/translations.json`)
+
+Use while AEM publish is blocked. Edit when adding keys before the spreadsheet is live:
 
 ```json
 {
@@ -62,7 +86,7 @@ If you still see *"Welcome to AEM authoring with Edge Delivery Services!"*, that
 
 **Button / cards** — same pattern: `page.block.field`.
 
-After deploy, the site replaces keys with values from `config/translations.json` for the active locale.
+After deploy, the site replaces keys with values from the merged dictionary (AEM + fallback) for the active locale.
 
 ## Language switcher
 
@@ -109,9 +133,9 @@ Attach each custom domain to the **same** EDS site in AEM Cloud Services.
 
 | Issue | Check |
 |-------|--------|
-| Keys visible (`nav.language`) | `config/translations.json` on `main`; curl URL above → **200** |
+| Keys visible (`nav.language`) | Fallback on `main` **or** AEM spreadsheet published; check both URLs |
 | Wrong language | `config/locales.json` domain map; try `?locale=fr` |
-| Console warning `[i18n] Could not load` | File path `translationsPath` in `locales.json` (default `/config/translations`) |
-| FR works, DE not | `locales.de` block exists with values for each key |
+| Console warning `[i18n] No translations` | Neither `/i18n/translations.json` nor `/config/translations.json` has rows for locale |
+| FR works, DE not | Column `de` in spreadsheet or `locales.de` in fallback |
 
 For legacy AEM spreadsheet publish issues, see **[DEBUG-I18N-PUBLISH.md](./DEBUG-I18N-PUBLISH.md)**.
