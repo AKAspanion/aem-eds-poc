@@ -44,5 +44,9 @@
       ]
     }
   ],
-  "filters": []
+  "filters": [],
+  "i18n": {
+    "text": { "type": "richtext" },
+    "imageAlt": { "type": "text", "attribute": "alt" }
+  }
 }

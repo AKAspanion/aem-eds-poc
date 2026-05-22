@@ -1,0 +1,17 @@
+{
+  "default": "en",
+  "translationsPath": "/i18n/translations",
+  "preview": {
+    "queryParam": "locale",
+    "storageKey": "hlx-locale"
+  },
+  "domains": {
+    "localhost": "en",
+    "www.example.com": "en",
+    "example.com": "en",
+    "www.example.fr": "fr",
+    "example.fr": "fr",
+    "www.example.de": "de",
+    "example.de": "de"
+  }
+}
