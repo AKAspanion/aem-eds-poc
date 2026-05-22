@@ -73,6 +73,34 @@ export function getLocaleSync() {
 }
 
 /**
+ * Normalizes spreadsheet row keys to lowercase (AEM may use "Key", "EN", etc.).
+ * @param {object} row
+ * @returns {Record<string, string>}
+ */
+function normalizeSpreadsheetRow(row) {
+  const normalized = {};
+  Object.entries(row).forEach(([col, val]) => {
+    if (col.startsWith(':')) return;
+    normalized[col.toLowerCase()] = val;
+  });
+  return normalized;
+}
+
+/**
+ * Extracts sheet data from single- or multi-sheet AEM JSON.
+ * @param {object} json
+ * @returns {object[]|null}
+ */
+function getSpreadsheetRows(json) {
+  if (Array.isArray(json?.data)) return json.data;
+  if (json?.[':type'] === 'multi-sheet' && Array.isArray(json[':names'])) {
+    const first = json[json[':names'][0]];
+    if (Array.isArray(first?.data)) return first.data;
+  }
+  return null;
+}
+
+/**
  * Parses AEM spreadsheet JSON into a flat key → string map for one locale.
  * @param {object} json Spreadsheet API response
  * @param {string} locale Column name (e.g. en, fr)
@@ -80,15 +108,18 @@ export function getLocaleSync() {
  */
 export function parseSpreadsheetDictionary(json, locale) {
   const dict = {};
-  const rows = json?.data;
-  if (!Array.isArray(rows)) return dict;
+  const rows = getSpreadsheetRows(json);
+  if (!rows) return dict;
 
-  const fallback = locale === 'en' ? null : 'en';
+  const localeCol = locale.toLowerCase();
+  const fallbackCol = localeCol === 'en' ? null : 'en';
 
   rows.forEach((row) => {
-    const key = (row.key || row.Key || '').trim();
+    const normalized = normalizeSpreadsheetRow(row);
+    const key = String(normalized.key || '').trim();
     if (!key) return;
-    const value = row[locale] ?? (fallback ? row[fallback] : undefined);
+    const value = normalized[localeCol]
+      ?? (fallbackCol ? normalized[fallbackCol] : undefined);
     if (value !== undefined && value !== null && String(value).trim() !== '') {
       dict[key] = String(value);
     }
@@ -116,18 +147,33 @@ export async function loadDictionary(locale) {
     const json = await resp.json();
     const dict = parseSpreadsheetDictionary(json, locale);
     dictionaryCache[locale] = dict;
+    if (Object.keys(dict).length === 0) {
+      // eslint-disable-next-line no-console
+      console.warn(`[i18n] Dictionary loaded but no rows for locale "${locale}". Check column names (en, fr, de).`);
+    }
     return dict;
   } catch (e) {
     if (!warnedMissingDictionary) {
       // eslint-disable-next-line no-console
       console.warn(
-        `[i18n] Could not load ${url}. Publish the translations spreadsheet in AEM. (${e.message})`,
+        `[i18n] Could not load ${url}. Quick Publish /content/aem-eds-poc/translations in AEM, `
+        + 'push paths.json to main, then open this URL in the browser. ',
+        e.message,
       );
       warnedMissingDictionary = true;
     }
     dictionaryCache[locale] = {};
     return dictionaryCache[locale];
   }
+}
+
+/**
+ * @param {string} locale
+ * @returns {Promise<boolean>}
+ */
+export async function isDictionaryAvailable(locale) {
+  const dict = await loadDictionary(locale);
+  return Object.keys(dict).length > 0;
 }
 
 /**
@@ -170,15 +216,33 @@ function applyTranslationToElement(el, key, value) {
 }
 
 /**
- * Translates img[alt] and leaf elements whose text is exactly one key.
+ * @param {Element} el
+ * @returns {boolean}
+ */
+function shouldSkipI18nElement(el) {
+  if (!el || SKIP_TAGS.has(el.tagName)) return true;
+  if (el.closest('.language-switcher')) return true;
+  if (el.getAttribute('data-i18n-applied') === 'true') return true;
+  return false;
+}
+
+/**
+ * Translates elements whose full text is a key, plus img[alt] and data-i18n.
  * @param {Element} root
  * @param {Record<string, string>} dict
  */
 function translateTree(root, dict) {
   if (!root || !dict || Object.keys(dict).length === 0) return;
 
+  root.querySelectorAll('[data-i18n]').forEach((el) => {
+    if (shouldSkipI18nElement(el)) return;
+    const key = el.getAttribute('data-i18n')?.trim();
+    const value = translateKey(key, dict);
+    if (value !== undefined) applyTranslationToElement(el, key, value);
+  });
+
   root.querySelectorAll('img[alt]').forEach((img) => {
-    if (img.getAttribute('data-i18n-applied') === 'true') return;
+    if (shouldSkipI18nElement(img)) return;
     const alt = img.getAttribute('alt')?.trim();
     const value = translateKey(alt, dict);
     if (value !== undefined) {
@@ -188,11 +252,23 @@ function translateTree(root, dict) {
     }
   });
 
-  root.querySelectorAll('p, h1, h2, h3, h4, h5, h6, a, button, span, li, td, th, figcaption, label').forEach((el) => {
-    if (SKIP_TAGS.has(el.tagName)) return;
-    if (el.getAttribute('data-i18n-applied') === 'true') return;
-    if (el.querySelector('p, h1, h2, h3, h4, h5, h6, ul, ol, div')) return;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const targets = new Set();
+  let textNode = walker.nextNode();
+  while (textNode) {
+    const key = textNode.textContent?.trim();
+    const value = translateKey(key, dict);
+    if (value !== undefined) {
+      const parent = textNode.parentElement;
+      if (parent && !shouldSkipI18nElement(parent)) {
+        const parentText = parent.textContent?.trim();
+        if (parentText === key) targets.add(parent);
+      }
+    }
+    textNode = walker.nextNode();
+  }
 
+  targets.forEach((el) => {
     const key = el.textContent?.trim();
     const value = translateKey(key, dict);
     if (value !== undefined) applyTranslationToElement(el, key, value);

@@ -9,6 +9,7 @@ import {
   loadSections,
 } from './aem.js';
 import { decorateRichtext } from './editor-support-rte.js';
+import { applyI18n } from './i18n.js';
 import { decorateMain } from './scripts.js';
 
 let promiseChanges$ = Promise.resolve();
@@ -44,6 +45,7 @@ async function applyChanges(event) {
       decorateMain(newMain);
       decorateRichtext(newMain);
       await loadSections(newMain);
+      await applyI18n(newMain);
       element.remove();
       newMain.style.display = null;
       // eslint-disable-next-line no-use-before-define
@@ -63,6 +65,7 @@ async function applyChanges(event) {
         decorateBlock(newBlock);
         decorateRichtext(newBlock);
         await loadBlock(newBlock);
+        await applyI18n(newBlock);
         block.remove();
         newBlock.style.display = null;
         return true;
@@ -82,6 +85,7 @@ async function applyChanges(event) {
           decorateSections(parentElement);
           decorateBlocks(parentElement);
           await loadSections(parentElement);
+          await applyI18n(parentElement);
           element.remove();
           newSection.style.display = null;
         } else {
@@ -89,6 +93,7 @@ async function applyChanges(event) {
           decorateButtons(parentElement);
           decorateIcons(parentElement);
           decorateRichtext(parentElement);
+          await applyI18n(parentElement);
         }
         return true;
       }

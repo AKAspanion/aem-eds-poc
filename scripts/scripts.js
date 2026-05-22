@@ -131,6 +131,8 @@ async function loadLazy(doc) {
   await loadFooter(footer);
   await applyI18n(footer);
 
+  await applyI18n(document.body);
+
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
 }

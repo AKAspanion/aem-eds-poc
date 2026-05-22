@@ -64,14 +64,22 @@ You should see `columns` including `key`, `en`, `fr`, … and a `data` array.
 
 Enter **keys only** in translatable fields, not final marketing copy.
 
-**Hero example**
+**Hero block** (block properties in Universal Editor)
 
 | Field | Value |
 |-------|--------|
 | Text | `home.hero.text` |
 | Alt | `home.hero.imageAlt` |
 
-**Button / title / cards** — same pattern: `page.block.field`.
+**Title block** (separate component — often the main page headline)
+
+| Field | Value |
+|-------|--------|
+| Title | `home.hero.text` (or your own key) |
+
+If you still see *"Welcome to AEM authoring with Edge Delivery Services!"*, that text is usually in a **Title** component, not the Hero **Text** field. Edit the Title block on the page, or replace that component’s title with your key.
+
+**Button / cards** — same pattern: `page.block.field`.
 
 After publish, the site replaces keys with values from the spreadsheet for the active locale.
 
@@ -124,9 +132,11 @@ Attach each custom domain to the **same** EDS site in AEM Cloud Services.
 
 ## Troubleshooting
 
+See **[DEBUG-I18N-PUBLISH.md](./DEBUG-I18N-PUBLISH.md)** for a full publish/paths/debug guide (GitHub Actions, Code Sync, Config Service, Quick Publish).
+
 | Issue | Check |
 |-------|--------|
-| Keys visible on site | Spreadsheet published? `/i18n/translations.json` returns 200? |
+| Keys visible (`nav.language`) | `/i18n/translations.json` must return **200** (not 404). Quick Publish spreadsheet; push `paths.json`; republish page. |
 | Wrong language | `config/locales.json` domain map; try `?locale=fr` |
 | Console warning `[i18n] Could not load` | Path mapping + Quick Publish spreadsheet |
 | FR works, DE not | Column `de` exists and row has values |
