@@ -1,5 +1,6 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { decorateLanguageSwitcher } from '../../scripts/language-switcher.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -158,6 +159,14 @@ export default async function decorate(block) {
   // prevent mobile nav behavior on window resize
   toggleMenu(nav, navSections, isDesktop.matches);
   isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
+
+  let navTools = nav.querySelector('.nav-tools');
+  if (!navTools) {
+    navTools = document.createElement('div');
+    navTools.className = 'nav-tools';
+    nav.append(navTools);
+  }
+  await decorateLanguageSwitcher(navTools);
 
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';

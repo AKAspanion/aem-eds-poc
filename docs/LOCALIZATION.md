@@ -75,6 +75,26 @@ Enter **keys only** in translatable fields, not final marketing copy.
 
 After publish, the site replaces keys with values from the spreadsheet for the active locale.
 
+## Language switcher
+
+A dropdown in the header (**nav tools**) lists locales from `config/locales.json` → `languages`.
+
+| Environment | Behavior |
+|-------------|----------|
+| Production (`www.example.fr`, etc.) | Redirects to the `hostname` for that locale (same path) |
+| Preview (`*.aem.page`) / `localhost` | Sets `?locale=fr` and `sessionStorage`, then reloads |
+
+Add or edit entries:
+
+```json
+"languages": [
+  { "code": "en", "label": "EN", "hostname": "www.example.com" },
+  { "code": "fr", "label": "FR", "hostname": "www.example.fr" }
+]
+```
+
+Optional spreadsheet key `nav.language` for the “Language” label.
+
 ## Preview locale on `*.aem.page`
 
 Production domains are not available on author preview. Use:

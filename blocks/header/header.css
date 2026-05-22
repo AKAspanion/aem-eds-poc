@@ -270,4 +270,43 @@ header nav .nav-sections ul > li > ul > li {
 /* tools */
 header nav .nav-tools {
   grid-area: tools;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* language switcher */
+header nav .language-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+header nav .language-switcher-label {
+  font-size: var(--body-font-size-s, 0.875rem);
+  white-space: nowrap;
+}
+
+header nav .language-switcher-select {
+  font: inherit;
+  font-size: var(--body-font-size-s, 0.875rem);
+  padding: 4px 8px;
+  border: 1px solid currentcolor;
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: inherit;
+  cursor: pointer;
+  min-width: 4.5rem;
+}
+
+header nav .language-switcher-select:focus {
+  outline: 2px solid currentcolor;
+  outline-offset: 2px;
+}
+
+@media (width >= 900px) {
+  header nav[aria-expanded='true'] .language-switcher {
+    justify-content: flex-end;
+    padding: 0 8px;
+  }
 }

@@ -5,6 +5,11 @@
     "queryParam": "locale",
     "storageKey": "hlx-locale"
   },
+  "languages": [
+    { "code": "en", "label": "EN", "hostname": "www.example.com" },
+    { "code": "fr", "label": "FR", "hostname": "www.example.fr" },
+    { "code": "de", "label": "DE", "hostname": "www.example.de" }
+  ],
   "domains": {
     "localhost": "en",
     "www.example.com": "en",

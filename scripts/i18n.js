@@ -14,7 +14,7 @@ let warnedMissingDictionary = false;
  * Loads locale routing config from the repo.
  * @returns {Promise<object>}
  */
-async function loadLocalesConfig() {
+export async function loadLocalesConfig() {
   if (localesConfig) return localesConfig;
   const base = window.hlx?.codeBasePath || '';
   try {
