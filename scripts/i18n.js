@@ -1,6 +1,6 @@
 /**
- * Domain-based i18n using AEM-published spreadsheet JSON.
- * Authors enter translation keys in content; strings live in /i18n/translations.json.
+ * Domain-based i18n from repo JSON (config/translations.json).
+ * Authors enter translation keys in content; strings are resolved at runtime.
  */
 
 const KEY_PATTERN = /^[a-z][\w-]*(?:\.[a-z][\w-]*)+$/i;
@@ -26,7 +26,7 @@ export async function loadLocalesConfig() {
   } catch (e) {
     // fall through to defaults
   }
-  localesConfig = { default: 'en', translationsPath: '/i18n/translations', domains: {} };
+  localesConfig = { default: 'en', translationsPath: '/config/translations', domains: {} };
   return localesConfig;
 }
 
@@ -129,7 +129,45 @@ export function parseSpreadsheetDictionary(json, locale) {
 }
 
 /**
- * Fetches translation dictionary for a locale from AEM-published spreadsheet.
+ * Parses repo translations.json ({ locales: { en: { key: value } } }) or legacy spreadsheet JSON.
+ * @param {object} json
+ * @param {string} locale
+ * @returns {Record<string, string>}
+ */
+export function parseTranslationsJson(json, locale) {
+  const localeCol = locale.toLowerCase();
+  const fallbackCol = 'en';
+
+  const fromLocales = json?.locales?.[localeCol];
+  if (fromLocales && typeof fromLocales === 'object' && !Array.isArray(fromLocales)) {
+    return Object.fromEntries(
+      Object.entries(fromLocales).map(([k, v]) => [k, String(v)]),
+    );
+  }
+
+  const topLevel = json?.[localeCol];
+  if (topLevel && typeof topLevel === 'object' && !Array.isArray(topLevel)) {
+    const looksLikeDictionary = Object.values(topLevel).every(
+      (v) => typeof v === 'string' || typeof v === 'number',
+    );
+    if (looksLikeDictionary) {
+      return Object.fromEntries(
+        Object.entries(topLevel).map(([k, v]) => [k, String(v)]),
+      );
+    }
+  }
+
+  const spreadsheet = parseSpreadsheetDictionary(json, locale);
+  if (Object.keys(spreadsheet).length > 0) return spreadsheet;
+
+  if (localeCol !== fallbackCol) {
+    return parseTranslationsJson(json, fallbackCol);
+  }
+  return spreadsheet;
+}
+
+/**
+ * Fetches translation dictionary for a locale from config/translations.json.
  * @param {string} locale
  * @returns {Promise<Record<string, string>>}
  */
@@ -138,26 +176,25 @@ export async function loadDictionary(locale) {
 
   const config = await loadLocalesConfig();
   const base = window.hlx?.codeBasePath || '';
-  const path = config.translationsPath || '/i18n/translations';
+  const path = config.translationsPath || '/config/translations';
   const url = `${base}${path}.json`;
 
   try {
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const json = await resp.json();
-    const dict = parseSpreadsheetDictionary(json, locale);
+    const dict = parseTranslationsJson(json, locale);
     dictionaryCache[locale] = dict;
     if (Object.keys(dict).length === 0) {
       // eslint-disable-next-line no-console
-      console.warn(`[i18n] Dictionary loaded but no rows for locale "${locale}". Check column names (en, fr, de).`);
+      console.warn(`[i18n] Dictionary loaded but no strings for locale "${locale}". Check config/translations.json.`);
     }
     return dict;
   } catch (e) {
     if (!warnedMissingDictionary) {
       // eslint-disable-next-line no-console
       console.warn(
-        `[i18n] Could not load ${url}. Quick Publish /content/aem-eds-poc/translations in AEM, `
-        + 'push paths.json to main, then open this URL in the browser. ',
+        `[i18n] Could not load ${url}. Add config/translations.json and push to main. `,
         e.message,
       );
       warnedMissingDictionary = true;

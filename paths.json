@@ -1,7 +1,6 @@
 {
   "mappings": [
-    "/content/aem-eds-poc/:/",
-    "/content/aem-eds-poc/translations:/i18n/translations"
+    "/content/aem-eds-poc/:/"
   ],
   "includes": [
     "/content/aem-eds-poc/"

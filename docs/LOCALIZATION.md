@@ -1,64 +1,45 @@
-# Localization (AEM spreadsheet + domain locale)
+# Localization (repo dictionary + domain locale)
 
-This project resolves **translation keys** in page content using strings from an AEM **spreadsheet** published as `/i18n/translations.json`. The active language is chosen from the **hostname** (or `?locale=` on preview).
+This project resolves **translation keys** in page content using **`config/translations.json`** in Git. The active language is chosen from the **hostname** (or `?locale=` on preview). No AEM spreadsheet publish is required.
 
-## AEM setup
+## Translation dictionary (`config/translations.json`)
 
-### 1. Create the translations spreadsheet
-
-1. Sign in to AEM Author → **Sites**.
-2. Navigate to `/content/aem-eds-poc/`.
-3. **Create** → **Page** (template **Spreadsheet**).
-4. **Title:** `translations` (URL segment: `translations`).
-5. **Create** and **Open**.
-
-Final path: **`/content/aem-eds-poc/translations`**
-
-### 2. Define columns
-
-Add columns in this order (names must match exactly):
-
-| Column | Description |
-|--------|-------------|
-| `key` | Translation key used in pages (e.g. `home.hero.text`) |
-| `en` | English copy (can include HTML for rich text) |
-| `fr` | French |
-| `de` | German |
-
-Add more locale columns as needed (`it`, `es`, …). Column name must match the locale code in `config/locales.json` domains.
-
-### 3. Add rows (example)
-
-| key | en | fr | de |
-|-----|----|----|-----|
-| `home.hero.text` | `<h1>Welcome</h1>` | `<h1>Bienvenue</h1>` | `<h1>Willkommen</h1>` |
-| `home.hero.imageAlt` | Hero banner | Bannière | Hero-Banner |
-| `nav.contact` | Contact | Contact | Kontakt |
-
-### 4. Publish path mapping
-
-`paths.json` in Git must include (already committed):
+Edit this file when adding or changing copy. Structure:
 
 ```json
-"/content/aem-eds-poc/translations:/i18n/translations"
+{
+  "locales": {
+    "en": {
+      "home.hero.text": "<h1>Welcome</h1>",
+      "nav.language": "Language"
+    },
+    "fr": {
+      "home.hero.text": "<h1>Bienvenue</h1>",
+      "nav.language": "Langue"
+    }
+  }
+}
 ```
 
-The site root is already in `includes` (`/content/aem-eds-poc/`), so the spreadsheet is published with your pages.
+- Keys must match what authors enter in Universal Editor (e.g. `home.hero.text`).
+- Rich text values may include HTML; plain fields use plain strings.
+- Add a locale block for each language in `config/locales.json` (`en`, `fr`, `de`, …).
 
-Commit and push to `main`, then wait for the GitHub → AEM sync if applicable.
+Commit and push to `main`. Code deploy serves the file at:
 
-### 5. Publish the spreadsheet
+`https://main--aem-eds-poc--<your-org>.aem.page/config/translations.json`
 
-1. **Sites** → select `/content/aem-eds-poc/translations`.
-2. **Quick Publish** → **Publish**.
+### Verify
 
-### 6. Verify JSON
+```bash
+curl -I "https://main--aem-eds-poc--<org>.aem.page/config/translations.json"
+```
 
-Open:
+Expect **200**. If i18n still shows raw keys, hard-refresh or clear cache.
 
-`https://main--aem-eds-poc--<your-org>.aem.page/i18n/translations.json`
+### Optional: migrate from CSV
 
-You should see `columns` including `key`, `en`, `fr`, … and a `data` array.
+Use `docs/i18n-translations-sample.csv` as a reference. Convert rows to `locales.<code>.<key>` entries in `config/translations.json`.
 
 ## Authoring pages (Universal Editor)
 
@@ -81,7 +62,7 @@ If you still see *"Welcome to AEM authoring with Edge Delivery Services!"*, that
 
 **Button / cards** — same pattern: `page.block.field`.
 
-After publish, the site replaces keys with values from the spreadsheet for the active locale.
+After deploy, the site replaces keys with values from `config/translations.json` for the active locale.
 
 ## Language switcher
 
@@ -101,7 +82,7 @@ Add or edit entries:
 ]
 ```
 
-Optional spreadsheet key `nav.language` for the “Language” label.
+Use key `nav.language` in `config/translations.json` for the “Language” label.
 
 ## Preview locale on `*.aem.page`
 
@@ -124,19 +105,13 @@ Edit `config/locales.json` in Git when adding a country:
 
 Attach each custom domain to the **same** EDS site in AEM Cloud Services.
 
-## Import translations via CSV
-
-1. Open the spreadsheet in AEM.
-2. **Upload** → **Replace Doc** or **Append To Doc**.
-3. CSV headers must match columns: `key`, `en`, `fr`, `de`, …
-
 ## Troubleshooting
-
-See **[DEBUG-I18N-PUBLISH.md](./DEBUG-I18N-PUBLISH.md)** for a full publish/paths/debug guide (GitHub Actions, Code Sync, Config Service, Quick Publish).
 
 | Issue | Check |
 |-------|--------|
-| Keys visible (`nav.language`) | `/i18n/translations.json` must return **200** (not 404). Quick Publish spreadsheet; push `paths.json`; republish page. |
+| Keys visible (`nav.language`) | `config/translations.json` on `main`; curl URL above → **200** |
 | Wrong language | `config/locales.json` domain map; try `?locale=fr` |
-| Console warning `[i18n] Could not load` | Path mapping + Quick Publish spreadsheet |
-| FR works, DE not | Column `de` exists and row has values |
+| Console warning `[i18n] Could not load` | File path `translationsPath` in `locales.json` (default `/config/translations`) |
+| FR works, DE not | `locales.de` block exists with values for each key |
+
+For legacy AEM spreadsheet publish issues, see **[DEBUG-I18N-PUBLISH.md](./DEBUG-I18N-PUBLISH.md)**.

@@ -1,0 +1,25 @@
+{
+  "locales": {
+    "en": {
+      "home.hero.text": "<h1>Welcome</h1>",
+      "home.hero.imageAlt": "Hero banner",
+      "nav.contact": "Contact",
+      "nav.home": "Home",
+      "nav.language": "Language"
+    },
+    "fr": {
+      "home.hero.text": "<h1>Bienvenue</h1>",
+      "home.hero.imageAlt": "Bannière principale",
+      "nav.contact": "Contact",
+      "nav.home": "Accueil",
+      "nav.language": "Langue"
+    },
+    "de": {
+      "home.hero.text": "<h1>Willkommen</h1>",
+      "home.hero.imageAlt": "Hero-Banner",
+      "nav.contact": "Kontakt",
+      "nav.home": "Startseite",
+      "nav.language": "Sprache"
+    }
+  }
+}
