@@ -8,14 +8,11 @@ This project resolves **translation keys** in page content using strings from an
 
 1. Sign in to AEM Author → **Sites**.
 2. Navigate to `/content/aem-eds-poc/`.
-3. **Create** → **Page**.
-4. On the **Template** tab, choose **Spreadsheet** (or **Placeholders** if Spreadsheet is not listed).
-5. **Title:** `translations` (URL segment should be `translations`).
-6. **Create** and **Open**.
+3. **Create** → **Page** (template **Spreadsheet**).
+4. **Title:** `translations` (URL segment: `translations`).
+5. **Create** and **Open**.
 
-Final path: `/content/aem-eds-poc/i18n/translations`
-
-If the `i18n` folder does not exist, create an **`i18n` section page** first, then create `translations` under it.
+Final path: **`/content/aem-eds-poc/translations`**
 
 ### 2. Define columns
 
@@ -43,14 +40,16 @@ Add more locale columns as needed (`it`, `es`, …). Column name must match the 
 `paths.json` in Git must include (already committed):
 
 ```json
-"/content/aem-eds-poc/i18n/translations:/i18n/translations"
+"/content/aem-eds-poc/translations:/i18n/translations"
 ```
+
+The site root is already in `includes` (`/content/aem-eds-poc/`), so the spreadsheet is published with your pages.
 
 Commit and push to `main`, then wait for the GitHub → AEM sync if applicable.
 
 ### 5. Publish the spreadsheet
 
-1. **Sites** → select `/content/aem-eds-poc/i18n/translations`.
+1. **Sites** → select `/content/aem-eds-poc/translations`.
 2. **Quick Publish** → **Publish**.
 
 ### 6. Verify JSON
