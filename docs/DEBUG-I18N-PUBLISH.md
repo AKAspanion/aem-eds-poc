@@ -1,5 +1,85 @@
 # Debug: translations spreadsheet not published (404)
 
+## If you see this in AEM publish logs (403 primary site)
+
+```
+x-error = [admin] Content operations restricted to the primary site: adobe-rnd/aem-boilerplate-xwalk
+POST https://admin.hlx.page/preview/akaspanion/aem-eds-poc/main/...
+```
+
+**Meaning:** AEM is configured to publish content for `akaspanion/aem-eds-poc`, but **admin.hlx.page** only allows writes to the **boilerplate** repo `adobe-rnd/aem-boilerplate-xwalk` (the template you started from). The push is rejected → `/i18n/translations.json` never appears → i18n shows raw keys like `nav.language`.
+
+This is **not** fixed by `paths.json`, Quick Publish alone, or GitHub Actions. You must align **AEM Cloud config** with a **registered Helix site** for your real GitHub repo.
+
+### Fix (do in this order)
+
+#### 1. Confirm your real GitHub coordinates
+
+| Field | Yours (example) |
+|-------|------------------|
+| GitHub org | `AKAspanion` (logs use lowercase `akaspanion` — must match admin) |
+| GitHub repo | `aem-eds-poc` |
+| Preview URL | `https://main--aem-eds-poc--akaspanion.aem.page/` |
+
+#### 2. Register your site on admin.hlx.page (Config Service)
+
+1. Log in: `https://admin.hlx.page/login`
+2. Copy `auth_token` cookie from browser DevTools.
+3. List sites: `GET https://admin.hlx.page/config/akaspanion/sites.json` (try `AKAspanion` if 404).
+
+If **`aem-eds-poc` is missing** or only `aem-boilerplate-xwalk` exists, create/update site config for **your** repo (see [repoless authoring](https://www.aem.live/developer/repoless-authoring)):
+
+```bash
+curl -X PUT "https://admin.hlx.page/config/akaspanion/sites/aem-eds-poc.json" \
+  -H "Content-Type: application/json" \
+  -H "x-auth-token: YOUR_TOKEN" \
+  --data '{
+    "code": {
+      "owner": "akaspanion",
+      "repo": "aem-eds-poc",
+      "source": {
+        "type": "github",
+        "url": "https://github.com/AKAspanion/aem-eds-poc"
+      }
+    },
+    "content": {
+      "source": {
+        "url": "https://author-p62213-e804183.adobeaemcloud.com/bin/franklin.delivery/AKAspanion/aem-eds-poc/main",
+        "type": "markup",
+        "suffix": ".html"
+      }
+    }
+  }'
+```
+
+Add `public.json` path mappings and `access.json` with your email + technical account (from AEM Edge Delivery config).
+
+**Goal:** `aem-eds-poc` is the **primary** site for your program, not `aem-boilerplate-xwalk`.
+
+#### 3. Update AEM Edge Delivery Services Configuration
+
+1. AEM Author → **Tools** → **Cloud Services** → **Edge Delivery Services Configuration**.
+2. Open the config used by `/content/aem-eds-poc`.
+3. Set **Organization** = `akaspanion` / `AKAspanion` (match admin).
+4. Set **Site name** = `aem-eds-poc` (must match admin site id).
+5. **Repository** = `aem-eds-poc` (not `aem-boilerplate-xwalk`).
+6. Save.
+
+Re-assign this cloud config on the site root **Properties → Cloud Services** if needed.
+
+#### 4. Republish and verify
+
+1. Quick Publish `/content/aem-eds-poc/translations` again.
+2. Publish logs should show **no** `restricted to the primary site: adobe-rnd/aem-boilerplate-xwalk`.
+3. `curl -I "https://main--aem-eds-poc--akaspanion.aem.page/i18n/translations.json"` → **200**.
+
+#### 5. If still blocked
+
+- Your AEM program may still be tied to the Adobe demo boilerplate. Ask your AEM admin or Adobe support to **change the primary Helix site** for the cloud program to `akaspanion/aem-eds-poc`.
+- Do **not** keep publishing to `adobe-rnd/aem-boilerplate-xwalk` unless your code and content intentionally live there.
+
+---
+
 GitHub Actions in this repo **does not publish** content to Edge Delivery. It only runs `npm run lint` on push. A failing workflow does **not** block AEM Quick Publish, but you should fix CI separately.
 
 Publishing `/i18n/translations.json` is an **AEM Author → Edge Delivery** path, controlled by `paths.json` (or Config Service) + **Quick Publish** on the spreadsheet page.
