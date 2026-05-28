@@ -4,7 +4,7 @@ Authors enter **translation keys** in AEM page content (hero, nav fragment, titl
 
 | Source | URL | When |
 |--------|-----|------|
-| **Primary** | `/i18n/translations.json` | AEM spreadsheet Quick Publish (`/content/aem-eds-poc/translations`) |
+| **Primary** | `/i18n/translations.json` | AEM spreadsheet Quick Publish (`/content/p62213-s29435-aem-eds-poc/translations`) |
 | **Fallback** | `/config/translations.json` | Git deploy until AEM publish works |
 
 AEM values **override** the repo fallback for the same key. The language switcher label (`nav.language`) uses the same dictionary.
@@ -13,10 +13,10 @@ Active language: **hostname** or `?locale=` on preview (`config/locales.json`).
 
 ## AEM translations spreadsheet (primary)
 
-1. **Sites** → `/content/aem-eds-poc/` → **Create** → **Spreadsheet** → title `translations`
+1. **Sites** → `/content/p62213-s29435-aem-eds-poc/` → **Create** → **Spreadsheet** → title `translations`
 2. Columns: `key`, `en`, `fr`, `de`, … (see `docs/i18n-translations-sample.csv`)
 3. **Quick Publish** the spreadsheet page
-4. `paths.json` maps: `/content/aem-eds-poc/translations:/i18n/translations`
+4. `paths.json` maps: `/content/p62213-s29435-aem-eds-poc/translations:/i18n/translations`
 
 Verify:
 

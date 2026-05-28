@@ -213,7 +213,7 @@ export async function loadDictionary(locale) {
     // eslint-disable-next-line no-console
     console.warn(
       `[i18n] No translations for locale "${locale}". `
-      + `Publish /content/aem-eds-poc/translations in AEM (${aemPath}.json) `
+      + `Publish /content/p62213-s29435-aem-eds-poc/translations in AEM (${aemPath}.json) `
       + `or add ${fallbackPath}.json in Git.`,
     );
     warnedMissingDictionary = true;

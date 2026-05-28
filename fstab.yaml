@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: "https://author-p62213-e804183.adobeaemcloud.com/bin/franklin.delivery/AKAspanion/aem-eds-poc/main"
+    url: "https://author-p62213-e804183.adobeaemcloud.com/content/p62213-s29435-aem-eds-poc"
     type: "markup"
     suffix: ".html"

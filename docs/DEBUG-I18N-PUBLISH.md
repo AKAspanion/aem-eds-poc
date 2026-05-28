@@ -59,7 +59,7 @@ Add `public.json` path mappings and `access.json` with your email + technical ac
 #### 3. Update AEM Edge Delivery Services Configuration
 
 1. AEM Author → **Tools** → **Cloud Services** → **Edge Delivery Services Configuration**.
-2. Open the config used by `/content/aem-eds-poc`.
+2. Open the config used by `/content/p62213-s29435-aem-eds-poc`.
 3. Set **Organization** = `akaspanion` / `AKAspanion` (match admin).
 4. Set **Site name** = `aem-eds-poc` (must match admin site id).
 5. **Repository** = `aem-eds-poc` (not `aem-boilerplate-xwalk`).
@@ -69,7 +69,7 @@ Re-assign this cloud config on the site root **Properties → Cloud Services** i
 
 #### 4. Republish and verify
 
-1. Quick Publish `/content/aem-eds-poc/translations` again.
+1. Quick Publish `/content/p62213-s29435-aem-eds-poc/translations` again.
 2. Publish logs should show **no** `restricted to the primary site: adobe-rnd/aem-boilerplate-xwalk`.
 3. `curl -I "https://main--aem-eds-poc--akaspanion.aem.page/i18n/translations.json"` → **200**.
 
@@ -90,7 +90,7 @@ Publishing `/i18n/translations.json` is an **AEM Author → Edge Delivery** path
 
 ```text
 Git: paths.json  ──►  AEM Cloud (code sync / config)  ──►  knows mapping
-AEM: /content/aem-eds-poc/translations  ──►  Quick Publish  ──►  EDS
+AEM: /content/p62213-s29435-aem-eds-poc/translations  ──►  Quick Publish  ──►  EDS
 Public URL: /i18n/translations.json
 ```
 
@@ -115,7 +115,7 @@ curl -I "https://main--aem-eds-poc--AKAspanion.aem.page/i18n/translations.json"
 Also try the AEM path (before mapping):
 
 ```bash
-curl -I "https://main--aem-eds-poc--AKAspanion.aem.page/content/aem-eds-poc/translations.json"
+curl -I "https://main--aem-eds-poc--AKAspanion.aem.page/content/p62213-s29435-aem-eds-poc/translations.json"
 ```
 
 If this returns **200** but `/i18n/translations.json` is **404**, path mapping from `paths.json` is not applied.
@@ -129,7 +129,7 @@ If this returns **200** but `/i18n/translations.json` is **404**, path mapping f
 3. It must contain:
 
 ```json
-"/content/aem-eds-poc/translations:/i18n/translations"
+"/content/p62213-s29435-aem-eds-poc/translations:/i18n/translations"
 ```
 
 Uncommitted local edits do nothing until **pushed to main** (or whatever branch AEM Code Sync tracks).
@@ -144,7 +144,7 @@ Uncommitted local edits do nothing until **pushed to main** (or whatever branch 
 2. Recent commits on `main` — sync succeeded?
 3. AEM → **Tools** → **Cloud Services** → **Edge Delivery Services Configuration** → your site → confirm org/repo/branch match GitHub.
 
-Without sync, AEM may still publish pages from `/content/aem-eds-poc/` but not know the `/i18n/translations` mapping.
+Without sync, AEM may still publish pages from `/content/p62213-s29435-aem-eds-poc/` but not know the `/i18n/translations` mapping.
 
 ---
 
@@ -167,7 +167,7 @@ If you enabled **repoless / Config Service**, you must POST path mappings to adm
 
 ## Step 5 — AEM Author: spreadsheet exists and is published
 
-1. **Sites** → `/content/aem-eds-poc/translations` exists (template **Spreadsheet**).
+1. **Sites** → `/content/p62213-s29435-aem-eds-poc/translations` exists (template **Spreadsheet**).
 2. Columns: `key`, `en`, `fr`, … (row data present).
 3. Select the spreadsheet → **Quick Publish** (not only Publish on the homepage).
 4. In publish dialog, confirm success / no errors.
@@ -181,10 +181,10 @@ Republish after any change to `paths.json` on GitHub (wait a few minutes for syn
 `paths.json` should include the site root:
 
 ```json
-"includes": ["/content/aem-eds-poc/"]
+"includes": ["/content/p62213-s29435-aem-eds-poc/"]
 ```
 
-The translations page must live under that tree (`/content/aem-eds-poc/translations`). It should not be excluded by `excludes`.
+The translations page must live under that tree (`/content/p62213-s29435-aem-eds-poc/translations`). It should not be excluded by `excludes`.
 
 ---
 
@@ -234,7 +234,7 @@ A red GitHub Action does not explain `/i18n/translations.json` 404 unless you ad
 
 - [ ] `paths.json` on GitHub `main` with translations mapping
 - [ ] AEM Code Sync app installed and synced
-- [ ] `/content/aem-eds-poc/translations` exists in Sites
+- [ ] `/content/p62213-s29435-aem-eds-poc/translations` exists in Sites
 - [ ] Quick Publish on **translations** (not only home page)
 - [ ] `curl -I .../i18n/translations.json` → **200**
 - [ ] JSON `data` rows include `home.hero.text`, `nav.language`
@@ -247,7 +247,7 @@ A red GitHub Action does not explain `/i18n/translations.json` 404 unless you ad
 
 Gather for support / Adobe forums:
 
-1. Screenshot of `/content/aem-eds-poc/translations` in Sites + Quick Publish result
+1. Screenshot of `/content/p62213-s29435-aem-eds-poc/translations` in Sites + Quick Publish result
 2. Link to `paths.json` on GitHub `main`
 3. Output of `curl -I` for `/i18n/translations.json` and `/config.json`
 4. Edge Delivery cloud config screenshot (org, site name, repoless yes/no)

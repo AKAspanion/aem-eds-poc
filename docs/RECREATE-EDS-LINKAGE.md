@@ -13,7 +13,7 @@ You **keep** your existing GitHub repo (blocks, i18n, `paths.json`). You **rebin
 | GitHub URL | `https://github.com/AKAspanion/aem-eds-poc` |
 | AEM author | `https://author-p62213-e804183.adobeaemcloud.com` |
 | Franklin delivery | `https://author-p62213-e804183.adobeaemcloud.com/bin/franklin.delivery/AKAspanion/aem-eds-poc/main` |
-| Content root | `/content/aem-eds-poc` |
+| Content root | `/content/p62213-s29435-aem-eds-poc` |
 | EDS site id | `aem-eds-poc` |
 | Preview URL | `https://main--aem-eds-poc--akaspanion.aem.page` |
 | Cloud program | `p62213` (from author URL) |
@@ -24,7 +24,7 @@ You **keep** your existing GitHub repo (blocks, i18n, `paths.json`). You **rebin
 
 ### 0.1 Backup
 
-- [ ] Export AEM content package: `/content/aem-eds-poc` (include `/translations` spreadsheet page).
+- [ ] Export AEM content package: `/content/p62213-s29435-aem-eds-poc` (include `/translations` spreadsheet page).
 - [ ] Confirm GitHub `main` is pushed (all i18n + model work).
 - [ ] Note current Edge Delivery cloud config name in AEM (**Tools → Cloud Services**).
 
@@ -164,11 +164,11 @@ curl -X POST "https://admin.hlx.page/config/akaspanion/sites/aem-eds-poc/public.
   --data '{
   "paths": {
     "mappings": [
-      "/content/aem-eds-poc/:/",
-      "/content/aem-eds-poc/translations:/i18n/translations"
+      "/content/p62213-s29435-aem-eds-poc/:/",
+      "/content/p62213-s29435-aem-eds-poc/translations:/i18n/translations"
     ],
     "includes": [
-      "/content/aem-eds-poc/"
+      "/content/p62213-s29435-aem-eds-poc/"
     ]
   }
 }'
@@ -243,11 +243,11 @@ If the old site was created with wrong GitHub URL:
    - **Site name:** `aem-eds-poc`
    - **Repository:** `aem-eds-poc`
    - **Project type:** `aem.live` with repoless / Config Service (if shown)
-3. **Sites** → `/content/aem-eds-poc` → **Properties** → **Cloud Services** → assign this config → Save
+3. **Sites** → `/content/p62213-s29435-aem-eds-poc` → **Properties** → **Cloud Services** → assign this config → Save
 
 ### 4.5 Recreate translations spreadsheet
 
-1. Under `/content/aem-eds-poc/` → **Create** → **Spreadsheet** → name `translations`
+1. Under `/content/p62213-s29435-aem-eds-poc/` → **Create** → **Spreadsheet** → name `translations`
 2. Columns: `key`, `en`, `fr`, `de`
 3. Import `docs/i18n-translations-sample.csv` or paste rows
 4. Do **not** publish yet (Phase 5)
@@ -282,7 +282,7 @@ curl -v -X POST "https://admin.hlx.page/preview/akaspanion/aem-eds-poc/main/i18n
 
 ### 5.3 AEM Quick Publish
 
-1. **Sites** → `/content/aem-eds-poc/translations` → **Quick Publish**
+1. **Sites** → `/content/p62213-s29435-aem-eds-poc/translations` → **Quick Publish**
 2. **Sites** → home page → **Quick Publish**
 3. Check **Distribution** logs — must **not** show `aem-boilerplate-xwalk`
 

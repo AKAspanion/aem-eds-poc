@@ -1,9 +1,9 @@
 {
   "mappings": [
-    "/content/aem-eds-poc/:/",
-    "/content/aem-eds-poc/translations:/i18n/translations"
+    "/content/p62213-s29435-aem-eds-poc/:/",
+    "/content/p62213-s29435-aem-eds-poc/translations:/i18n/translations"
   ],
   "includes": [
-    "/content/aem-eds-poc/"
+    "/content/p62213-s29435-aem-eds-poc/"
   ]
 }
