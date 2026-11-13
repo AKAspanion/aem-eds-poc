@@ -1,0 +1,245 @@
+/* Clinically Crafted: heading, packshot (carousel when several slides), icon pills */
+
+.clinically-crafted {
+  --cc-brand: #00859e;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  width: 100%;
+  margin-top: -1rem;
+  overflow: hidden;
+  padding: 3rem var(--gutter) 2rem;
+  background: radial-gradient(circle at 50% 40%, rgb(214 245 240) 7%, rgb(251 250 247) 100%);
+}
+
+/* header */
+.clinically-crafted .cc-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.clinically-crafted .cc-title {
+  font-size: var(--text-3xl);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: normal;
+}
+
+.clinically-crafted .cc-title-line1 {
+  color: #171717;
+}
+
+.clinically-crafted .cc-title-line2 {
+  color: var(--color-primary);
+}
+
+.clinically-crafted .cc-desc {
+  max-width: 28rem;
+  color: #4a5565;
+  font-size: var(--text-base);
+  line-height: 1.625;
+}
+
+/* media / carousel */
+.clinically-crafted .cc-media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.clinically-crafted .cc-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.clinically-crafted .cc-track {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.clinically-crafted .cc-track::-webkit-scrollbar {
+  display: none;
+}
+
+.clinically-crafted .cc-slide {
+  position: relative;
+  z-index: 10;
+  flex: 0 0 100%;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 15%));
+  scroll-snap-align: start;
+}
+
+.clinically-crafted .cc-slide picture {
+  display: block;
+}
+
+.clinically-crafted .cc-slide img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.clinically-crafted .cc-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 20;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.5rem;
+  border: 1px solid #d1d5dc;
+  border-radius: 9999px;
+  background-color: rgb(255 255 255 / 50%);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%);
+  color: rgb(0 0 0 / 80%);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transform: translateY(-50%);
+  transition: background-color 0.3s;
+}
+
+.clinically-crafted .cc-arrow:hover {
+  background-color: #fff;
+}
+
+.clinically-crafted .cc-arrow svg {
+  width: 24px;
+  height: 24px;
+}
+
+.clinically-crafted .cc-prev {
+  left: 0.75rem;
+}
+
+.clinically-crafted .cc-next {
+  right: 0.75rem;
+}
+
+/* pills */
+.clinically-crafted .cc-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.clinically-crafted .cc-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid #f9fafb;
+  border-radius: 9999px;
+  background-color: #fff;
+  color: #171717;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.4286;
+}
+
+.clinically-crafted .cc-pill-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 9999px;
+  background-color: rgb(0 133 158 / 10%);
+}
+
+.clinically-crafted .cc-pill-icon .icon {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+}
+
+.clinically-crafted .cc-pill-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (width >= 640px) {
+  .clinically-crafted {
+    padding-block: 4rem;
+  }
+}
+
+@media (width >= 768px) {
+  .clinically-crafted {
+    gap: 2rem;
+    margin-top: 0;
+  }
+
+  .clinically-crafted .cc-header {
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .clinically-crafted .cc-title {
+    font-size: var(--text-5xl);
+  }
+
+  .clinically-crafted .cc-desc {
+    font-size: var(--text-lg);
+  }
+
+  .clinically-crafted .cc-viewport {
+    max-height: 35rem;
+  }
+
+  .clinically-crafted .cc-slide {
+    padding-inline: 4rem;
+  }
+
+  .clinically-crafted .cc-arrow {
+    display: flex;
+  }
+
+  .clinically-crafted .cc-pills {
+    gap: 1.5rem;
+  }
+
+  .clinically-crafted .cc-pill {
+    padding: 0.75rem 1.5rem;
+    font-size: var(--text-base);
+    line-height: 1.5;
+  }
+}
+
+@media (width >= 1024px) {
+  .clinically-crafted {
+    padding-block: 5rem 3rem;
+  }
+
+  .clinically-crafted .cc-viewport {
+    max-height: 43rem;
+  }
+}
+
+@media (width >= 1536px) {
+  .clinically-crafted .cc-viewport {
+    max-height: 60rem;
+  }
+}
