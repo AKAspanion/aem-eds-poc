@@ -19,6 +19,9 @@ export default async function decorate(block) {
   const [brandSec, linksSec, legalSec] = [...fragment.children]
     .map((s) => s.querySelector('.default-content-wrapper') || s);
 
+  // Document Authoring wraps list item content in <p>; unwrap so li > a holds
+  fragment.querySelectorAll('li > p').forEach((p) => p.replaceWith(...p.childNodes));
+
   // unwrap any links the button decorator touched
   fragment.querySelectorAll('a.button').forEach((a) => { a.className = ''; });
   fragment.querySelectorAll('.button-wrapper').forEach((p) => p.classList.remove('button-wrapper'));
@@ -35,6 +38,8 @@ export default async function decorate(block) {
   const logo = brandSec?.querySelector('a');
   if (logo) {
     logo.className = 'footer-logo';
+    logo.removeAttribute('title');
+    if (!logo.getAttribute('aria-label')) logo.setAttribute('aria-label', 'Home');
     brand.append(logo);
   }
   const divider = document.createElement('div');

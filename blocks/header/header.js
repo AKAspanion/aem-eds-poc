@@ -97,6 +97,8 @@ export default async function decorate(block) {
   const brandLink = brandSection?.querySelector('a');
   if (brandLink) {
     brandLink.className = 'nav-brand';
+    brandLink.removeAttribute('title');
+    if (!brandLink.getAttribute('aria-label')) brandLink.setAttribute('aria-label', 'Home');
     brandLink.closest('.button-wrapper')?.classList.remove('button-wrapper');
     const img = brandLink.querySelector('img');
     if (img) {
@@ -114,6 +116,8 @@ export default async function decorate(block) {
   menu.id = 'nav-menu';
   if (list) {
     list.className = 'nav-links';
+    // Document Authoring wraps list item content in <p>; unwrap so li > a holds
+    list.querySelectorAll('li > p').forEach((p) => p.replaceWith(...p.childNodes));
     [...list.children].forEach((li) => {
       if (li.querySelector(':scope > ul')) {
         buildDropdown(li);
