@@ -174,6 +174,10 @@ export async function submitForm(form) {
     const { website, ...fields } = data;
     // honeypot filled: a bot. Pretend success, send nothing.
     if (website) return { ok: true };
+    // which form and when: lets several forms share one spreadsheet. The
+    // spreadsheet only stores fields that have a matching header in row 1.
+    const formName = formsPath.replace(/\.json$/, '').split('/').pop();
+    Object.assign(fields, { form: formName, submittedAt: new Date().toISOString() });
     const id = btoa(`${formsPath.replace(/\.json$/, '')}.json`);
     const res = await fetch(`https://forms.adobe.com/adobe/forms/af/submit/${id}`, {
       method: 'POST',

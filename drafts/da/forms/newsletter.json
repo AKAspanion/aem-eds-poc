@@ -1,0 +1,32 @@
+{
+  "total": 3,
+  "offset": 0,
+  "limit": 3,
+  "data": [
+    {
+      "Name": "email",
+      "Type": "email",
+      "Label": "Email address",
+      "Mandatory": "true",
+      "Value": "",
+      "Action": ""
+    },
+    {
+      "Name": "source",
+      "Type": "hidden",
+      "Label": "Source",
+      "Mandatory": "",
+      "Value": "",
+      "Action": ""
+    },
+    {
+      "Name": "submit",
+      "Type": "submit",
+      "Label": "Get Updates",
+      "Mandatory": "",
+      "Value": "Thank you for subscribing!",
+      "Action": "https://docs.google.com/spreadsheets/d/1vpcGsHsrtibNcTPRX4XHOtKjqi-W-cD-hRDt3fi7cNw/edit"
+    }
+  ],
+  ":type": "sheet"
+}
