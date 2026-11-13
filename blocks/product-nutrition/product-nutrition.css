@@ -1,0 +1,269 @@
+/* Product Nutrition: intro + tabbed nutrition table + grouped lists */
+
+/* product theme (page metadata Theme → body class); prohance is the default */
+.product-nutrition {
+  --brand: #00859e;
+  --brand-badge-bg: #c5f6f5;
+  --brand-badge-text: #00506a;
+  --nutrition-panel-bg:
+    radial-gradient(circle at 18% 20%, rgb(223 247 248 / 61%) 0%, rgb(223 247 248 / 0%) 65%),
+    linear-gradient(155deg, #f6fefd 0%, #fbfaf6 100%);
+
+  margin-top: 52px;
+  padding-inline: 16px;
+  background-color: #fbfaf6;
+}
+
+body.prohance-dm .product-nutrition {
+  --brand: #1035c2;
+  --brand-badge-bg: #e9f3ff;
+  --brand-badge-text: #00318b;
+  --nutrition-panel-bg:
+    radial-gradient(circle at 18% 20%, rgb(228 242 255 / 61%) 0%, rgb(228 242 255 / 0%) 65%),
+    linear-gradient(155deg, #f8fcff 0%, #fbf9f5 100%);
+}
+
+body.prohance-hp .product-nutrition {
+  --brand: #d5584d;
+  --brand-badge-bg: #ffede9;
+  --brand-badge-text: #831a1d;
+  --nutrition-panel-bg:
+    radial-gradient(circle at 18% 20%, rgb(255 237 233 / 61%) 0%, rgb(255 237 233 / 0%) 65%),
+    linear-gradient(155deg, #fffdfb 0%, #fbfaf6 100%);
+}
+
+/* shared product intro styles */
+.product-nutrition .product-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.375rem 1rem;
+  background-color: var(--brand-badge-bg);
+  color: var(--brand-badge-text);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1rem;
+}
+
+.product-nutrition .product-badge-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--brand);
+}
+
+.product-nutrition .product-heading {
+  display: flex;
+  flex-direction: column;
+  margin-top: 18px;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 40px;
+  letter-spacing: -1.6px;
+}
+
+.product-nutrition .product-heading-line1 {
+  color: #0c121a;
+}
+
+.product-nutrition .product-heading-line2 {
+  color: var(--brand);
+}
+
+.product-nutrition .product-description {
+  max-width: 28rem;
+  margin-top: 1rem;
+  color: #575e69;
+  font-size: 14.9px;
+  line-height: 1.5rem;
+}
+
+/* panel */
+.product-nutrition .product-nutrition-panel {
+  margin: 1rem auto 0;
+  border: 1px solid #f4efea;
+  border-radius: 2rem;
+  padding: 1rem;
+  background-color: #fdfafa;
+  background-image: var(--nutrition-panel-bg);
+  box-shadow: 0 2px 4px 0 rgb(17 22 31 / 5%), 0 24px 48px -12px rgb(17 22 31 / 12%);
+}
+
+.product-nutrition .product-nutrition-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.product-nutrition .product-nutrition-tab {
+  border: 0;
+  border-radius: 9999px;
+  padding: 0.625rem 1.25rem;
+  background-color: #efece6;
+  color: #6b7280;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  line-height: 1rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.product-nutrition .product-nutrition-tab[aria-selected='true'] {
+  background-color: var(--brand);
+  color: #fff;
+}
+
+.product-nutrition .product-nutrition-tab:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.product-nutrition .product-nutrition-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.5rem 3rem;
+}
+
+.product-nutrition .product-nutrition-column.is-secondary {
+  display: none;
+}
+
+.product-nutrition .product-nutrition-label {
+  margin-bottom: 1rem;
+  color: #8c827a;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+}
+
+.product-nutrition .product-nutrition-rows,
+.product-nutrition .product-nutrition-group-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product-nutrition .product-nutrition-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-block: 0.75rem;
+}
+
+.product-nutrition .product-nutrition-row + .product-nutrition-row {
+  border-top: 1px solid #f0ece6;
+}
+
+.product-nutrition .product-nutrition-name {
+  color: #3e3a38;
+  font-size: var(--text-sm);
+  line-height: 1.25rem;
+}
+
+.product-nutrition .product-nutrition-measure {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.product-nutrition .product-nutrition-bar {
+  width: 4rem;
+  height: 0.25rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  background-color: #efece6;
+}
+
+.product-nutrition .product-nutrition-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 9999px;
+  background-color: var(--brand);
+  transition: width 0.3s;
+}
+
+.product-nutrition .product-nutrition-value {
+  min-width: 55px;
+  color: var(--brand);
+  font-size: var(--text-sm);
+  line-height: 1.25rem;
+  text-align: right;
+}
+
+/* grouped lists (Vitamins & Minerals) */
+.product-nutrition .product-nutrition-group {
+  margin-top: 1.25rem;
+  padding-top: 1.5rem;
+}
+
+.product-nutrition .product-nutrition-group-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.product-nutrition .product-nutrition-group-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #fffdfb;
+}
+
+.product-nutrition .product-nutrition-group-name {
+  color: #3e3a38;
+  font-size: 13.7px;
+  line-height: 1.5;
+}
+
+.product-nutrition .product-nutrition-group-value {
+  color: var(--brand);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@media (width >= 640px) {
+  .product-nutrition {
+    padding-inline: 38px;
+  }
+
+  .product-nutrition .product-heading {
+    font-size: 42px;
+    line-height: 66px;
+  }
+
+  .product-nutrition .product-nutrition-panel {
+    padding: 2rem;
+  }
+
+  .product-nutrition .product-nutrition-group-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 768px) {
+  .product-nutrition .product-nutrition-column.is-secondary {
+    display: block;
+  }
+}
+
+@media (width >= 1024px) {
+  .product-nutrition .product-nutrition-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .product-nutrition .product-nutrition-group-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

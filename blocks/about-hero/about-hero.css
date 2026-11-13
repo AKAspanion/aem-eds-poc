@@ -1,0 +1,224 @@
+/*
+ * About Hero. Staging wraps the about page in a radial gradient with pt-40 and
+ * pulls the hero up (-mt-14, lg:-mt-4): 104px / 144px from the top.
+ */
+main:has(.about-hero) {
+  padding-bottom: 5rem;
+  background: radial-gradient(80% 120% at 50% 0%, #daedff 0%, #fff 60%);
+}
+
+.about-hero {
+  padding-top: 6.5rem;
+}
+
+/* Tailwind `container px-4 sm:px-6` */
+.about-hero .about-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 1.0625rem;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.about-hero .about-hero-eyebrow {
+  grid-row: 1;
+  color: #575e69;
+  font-size: 11.5px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+}
+
+.about-hero h1 {
+  grid-row: 2;
+  color: #0c121a;
+  font-size: var(--text-4xl);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.about-hero h1 .about-hero-accent {
+  color: #0047bb;
+}
+
+.about-hero .about-hero-media {
+  grid-row: 3;
+  margin-top: 0.5rem;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  aspect-ratio: 637 / 479;
+}
+
+.about-hero .about-hero-media picture,
+.about-hero .about-hero-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-hero .about-hero-description {
+  grid-row: 4;
+  max-width: 36rem;
+  color: #575e69;
+  font-size: var(--text-lg);
+  line-height: 1.625;
+}
+
+.about-hero .about-hero-ctas {
+  grid-row: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.5rem;
+}
+
+.about-hero a.about-hero-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 3rem;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  padding-inline: 1.5rem;
+  font-size: var(--text-sm);
+  font-weight: 400;
+  line-height: 1.25rem;
+  text-decoration: none;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.about-hero a.about-hero-cta.primary {
+  background-color: #1035c2;
+  color: #fdfcf8;
+}
+
+.about-hero a.about-hero-cta.primary:hover {
+  background-color: rgb(16 53 194 / 90%);
+}
+
+.about-hero a.about-hero-cta.secondary {
+  border-color: rgb(12 18 26 / 15%);
+  color: rgb(12 18 26 / 80%);
+}
+
+.about-hero a.about-hero-cta.secondary:hover {
+  background-color: rgb(12 18 26 / 5%);
+}
+
+.about-hero a.about-hero-cta svg {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+.about-hero .about-hero-stats {
+  grid-row: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 1.5rem 0 0;
+  list-style: none;
+}
+
+.about-hero .about-hero-stats li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.about-hero .about-hero-stat-value {
+  color: #1035c2;
+  font-size: var(--text-3xl);
+  line-height: 1;
+}
+
+.about-hero .about-hero-stat-label {
+  color: #575e69;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+}
+
+@media (width >= 640px) {
+  .about-hero .about-hero-inner {
+    max-width: 40rem;
+    padding-inline: 1.5rem;
+  }
+
+  .about-hero h1 {
+    font-size: var(--text-5xl);
+  }
+}
+
+@media (width >= 768px) {
+  .about-hero .about-hero-inner {
+    max-width: 48rem;
+  }
+}
+
+@media (width >= 1024px) {
+  .about-hero {
+    padding-top: 9rem;
+  }
+
+  /* text column (w-156) centred against the image (flex-1) */
+  .about-hero .about-hero-inner {
+    grid-template-columns: 39rem minmax(0, 1fr);
+    grid-template-rows: 1fr repeat(5, auto) 1fr;
+    column-gap: 3rem;
+    max-width: 64rem;
+  }
+
+  .about-hero :is(.about-hero-eyebrow, h1, .about-hero-description, .about-hero-ctas, .about-hero-stats) {
+    grid-column: 1;
+  }
+
+  .about-hero .about-hero-eyebrow { grid-row: 2; }
+  .about-hero .about-hero-description { grid-row: 4; }
+  .about-hero .about-hero-ctas { grid-row: 5; }
+
+  .about-hero h1 {
+    grid-row: 3;
+    font-size: 4.5rem;
+  }
+
+  .about-hero .about-hero-media {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    align-self: center;
+    margin-top: 0;
+    border-radius: 40px;
+  }
+
+  .about-hero a.about-hero-cta {
+    justify-content: space-between;
+    width: auto;
+  }
+
+  .about-hero .about-hero-stats {
+    grid-row: 6;
+    justify-content: flex-start;
+    gap: 4rem;
+  }
+}
+
+@media (width >= 1280px) {
+  .about-hero .about-hero-inner {
+    max-width: 80rem;
+  }
+}
+
+@media (width >= 1536px) {
+  .about-hero .about-hero-inner {
+    max-width: 96rem;
+  }
+}

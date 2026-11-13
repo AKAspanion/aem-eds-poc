@@ -1,0 +1,96 @@
+/* Coming Soon: centred illustration, title, copy and pill CTA (same as the 404 page) */
+.coming-soon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 8rem 1rem 5rem;
+  background-color: #fff;
+}
+
+.coming-soon .coming-soon-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.coming-soon picture,
+.coming-soon img {
+  display: block;
+  width: 20rem;
+  height: auto;
+}
+
+.coming-soon .coming-soon-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  text-align: center;
+}
+
+.coming-soon h1 {
+  color: #0c121a;
+  font-size: var(--text-xl);
+  font-weight: 500;
+  line-height: 2rem;
+  letter-spacing: -0.48px;
+}
+
+.coming-soon .coming-soon-description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgb(12 18 26 / 85%);
+  font-size: var(--text-base);
+  line-height: 1.5;
+}
+
+.coming-soon a.coming-soon-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.75rem 1.75rem;
+  background-color: #0047bb;
+  color: #fff;
+  font-size: var(--text-base);
+  font-weight: 500;
+  line-height: 21.6px;
+  text-decoration: none;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.coming-soon a.coming-soon-cta:hover {
+  background-color: rgb(0 71 187 / 90%);
+}
+
+.coming-soon a.coming-soon-cta:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0047bb;
+}
+
+.coming-soon a.coming-soon-cta svg {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (width >= 768px) {
+  .coming-soon picture,
+  .coming-soon img {
+    width: 26.5625rem;
+  }
+
+  .coming-soon h1 {
+    font-size: 22px;
+  }
+
+  .coming-soon .coming-soon-description {
+    font-size: var(--text-lg);
+    line-height: 1.5556;
+  }
+}

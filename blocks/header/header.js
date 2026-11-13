@@ -47,7 +47,19 @@ function buildDropdown(li) {
   li.prepend(button);
   subList.classList.add('nav-dropdown');
 
-  if ([...subList.querySelectorAll('a')].some((a) => isActive(a.href))) {
+  // a dropdown is "current" when the page is in the same folder as its links
+  // (e.g. any /products/* page highlights "Our Products"), like the Next.js header
+  const folders = [...subList.querySelectorAll('a')].map((a) => {
+    try {
+      const parts = new URL(a.href, window.location).pathname.split('/').filter(Boolean);
+      return parts.length > 1 ? `/${parts[0]}/` : null;
+    } catch {
+      return null;
+    }
+  }).filter(Boolean);
+  const { pathname } = window.location;
+  if ([...subList.querySelectorAll('a')].some((a) => isActive(a.href))
+    || folders.some((f) => pathname.startsWith(f) || pathname === f.slice(0, -1))) {
     li.classList.add('active');
   }
 

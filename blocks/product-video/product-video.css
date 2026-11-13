@@ -1,0 +1,81 @@
+/*
+ * Product Video: sticky scroll-scrubbed animation. The section that holds it
+ * (`.product-video-container`, added by aem.js) becomes a two-column layout from
+ * 768px: video on the left, the other product blocks stacked on the right.
+ */
+
+main > .section.product-video-container {
+  background-color: #fbfaf6;
+}
+
+main > .section.product-video-container > .product-video-wrapper + div {
+  padding-top: 16px;
+}
+
+main > .section.product-video-container > div:last-child:not(.product-video-wrapper) {
+  padding-bottom: 16px;
+}
+
+.product-video {
+  height: 100%;
+}
+
+.product-video .product-video-stage {
+  position: sticky;
+  top: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100dvh - 4.5rem);
+  overflow: hidden;
+}
+
+.product-video .product-video-stage picture,
+.product-video .product-video-stage img,
+.product-video .product-video-media {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.product-video .product-video-media {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.product-video.is-ready .product-video-media {
+  opacity: 1;
+}
+
+@media (width >= 640px) {
+  main > .section.product-video-container > .product-video-wrapper + div {
+    padding-top: 38px;
+  }
+
+  main > .section.product-video-container > div:last-child:not(.product-video-wrapper) {
+    padding-bottom: 38px;
+  }
+}
+
+@media (width >= 768px) {
+  main > .section.product-video-container {
+    display: grid;
+    grid-template-columns: clamp(320px, 46.3vw, 570px) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  main > .section.product-video-container > div {
+    grid-column: 2;
+  }
+
+  main > .section.product-video-container > .product-video-wrapper {
+    grid-column: 1;
+    grid-row: 1 / span 20;
+    align-self: stretch;
+  }
+}

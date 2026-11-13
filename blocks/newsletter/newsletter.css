@@ -1,0 +1,332 @@
+/* Newsletter: photo banner with copy and an email form. Default = videos look, .panel = blog look */
+.newsletter {
+  width: 100%;
+  max-width: calc(var(--content-max) + (2 * var(--gutter)));
+  margin: 0 auto;
+  padding: 40px var(--gutter);
+}
+
+.newsletter .newsletter-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: 16px;
+  background: #0a1f6b;
+}
+
+.newsletter .newsletter-bg,
+.newsletter .newsletter-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.newsletter .newsletter-bg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.newsletter .newsletter-overlay {
+  background: linear-gradient(94deg, rgb(3 10 127 / 90%) 0%, rgb(0 92 95 / 70%) 55%, rgb(172 50 37 / 55%) 100%);
+}
+
+.newsletter .newsletter-content {
+  position: relative;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.newsletter .newsletter-copy {
+  flex: 1;
+  color: #fff;
+}
+
+.newsletter .newsletter-eyebrow {
+  margin: 0;
+  color: rgb(255 255 255 / 80%);
+  font-size: var(--text-xs);
+  line-height: 16px;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+}
+
+.newsletter .newsletter-title {
+  margin: 0;
+  color: #fff;
+  font-size: var(--text-3xl);
+  font-weight: 400;
+  line-height: 40px;
+  letter-spacing: 0.6px;
+}
+
+.newsletter .newsletter-eyebrow + .newsletter-title {
+  margin-top: 12px;
+}
+
+.newsletter .newsletter-text {
+  margin: 12px 0 0;
+  color: rgb(255 255 255 / 80%);
+  font-size: var(--text-base);
+  line-height: 24px;
+  letter-spacing: 0.025em;
+}
+
+.newsletter .newsletter-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  border: 1px solid rgb(255 255 255 / 70%);
+  border-radius: 9999px;
+  padding: 8px 120px 8px 8px;
+  background: rgb(255 255 255 / 60%);
+  backdrop-filter: blur(40px);
+}
+
+.newsletter .newsletter-hp {
+  display: none;
+}
+
+.newsletter .newsletter-input {
+  width: 184px;
+  min-width: 0;
+  height: 40px;
+  border: 0;
+  border-radius: 9999px 0 0 9999px;
+  padding: 0 0 0 8px;
+  background: transparent;
+  color: #fff;
+  font-size: var(--text-sm);
+  outline: none;
+}
+
+.newsletter .newsletter-input::placeholder {
+  color: #fff;
+  opacity: 1;
+}
+
+.newsletter .newsletter-button {
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  height: 48px;
+  border: 0;
+  border-radius: 9999px;
+  padding: 0 16px;
+  background: var(--color-primary);
+  color: rgb(255 255 255 / 80%);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.newsletter .newsletter-button:hover,
+.newsletter .newsletter-button:focus-visible {
+  background: rgb(1 69 177 / 90%);
+}
+
+.newsletter .newsletter-button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.newsletter .newsletter-form:focus-within {
+  outline: 2px solid rgb(255 255 255 / 80%);
+  outline-offset: 2px;
+}
+
+.newsletter .newsletter-status {
+  margin: 8px 0 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.newsletter .newsletter-status:empty {
+  display: none;
+}
+
+.newsletter .newsletter-status[data-state='success'] {
+  color: #86efac;
+}
+
+.newsletter .newsletter-status[data-state='error'] {
+  color: #fca5a5;
+}
+
+/* ---------- panel variant (blog look) ---------- */
+.newsletter.panel .newsletter-card {
+  padding: 24px;
+}
+
+.newsletter.panel .newsletter-overlay {
+  background: linear-gradient(rgb(0 0 0 / 40%), rgb(0 0 0 / 40%)), rgb(54 119 199 / 40%);
+}
+
+.newsletter.panel .newsletter-content {
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  min-height: 160px;
+}
+
+.newsletter.panel .newsletter-copy {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 496px;
+}
+
+.newsletter.panel .newsletter-copy > * {
+  margin: 0;
+}
+
+.newsletter.panel .newsletter-title {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.newsletter.panel .newsletter-text {
+  color: #fff;
+  font-size: var(--text-base);
+  line-height: 23px;
+  letter-spacing: -0.025em;
+}
+
+.newsletter.panel .newsletter-form-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 646px;
+  border-radius: 16px;
+  padding: 24px;
+  background: rgb(163 163 163 / 20%);
+}
+
+.newsletter.panel .newsletter-form {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
+  max-width: 594px;
+  border: 0;
+  padding: 0;
+  background: none;
+  backdrop-filter: none;
+}
+
+.newsletter.panel .newsletter-input {
+  width: 100%;
+  height: 60px;
+  border-radius: 9999px;
+  padding: 16px 28px;
+  background: #fff;
+  color: #a3a3a3;
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+
+.newsletter.panel .newsletter-input::placeholder {
+  color: #a3a3a3;
+}
+
+.newsletter.panel .newsletter-input:focus {
+  box-shadow: 0 0 0 2px rgb(1 69 177 / 30%);
+}
+
+.newsletter.panel .newsletter-button {
+  position: static;
+  width: 100%;
+  height: 60px;
+  color: #fff;
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.newsletter.panel .newsletter-form:focus-within {
+  outline: none;
+}
+
+.newsletter.panel .newsletter-status[data-state='success'] {
+  color: #4ade80;
+}
+
+.newsletter.panel .newsletter-status[data-state='error'] {
+  color: #f87171;
+}
+
+@media (width >= 640px) {
+  .newsletter .newsletter-card {
+    border-radius: 32px;
+    padding: 56px;
+  }
+
+  .newsletter .newsletter-title {
+    font-size: 34.6px;
+  }
+
+  .newsletter .newsletter-input {
+    width: 216px;
+    padding-left: 16px;
+  }
+
+  .newsletter.panel .newsletter-card {
+    border-radius: 24px;
+    padding: 24px;
+  }
+
+  .newsletter.panel .newsletter-title {
+    font-size: var(--text-3xl);
+  }
+
+  .newsletter.panel .newsletter-input {
+    padding-right: 170px;
+  }
+
+  .newsletter.panel .newsletter-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: auto;
+  }
+}
+
+@media (width >= 768px) {
+  .newsletter .newsletter-input {
+    width: 344px;
+  }
+
+  .newsletter.panel .newsletter-card {
+    padding: 32px;
+  }
+
+  .newsletter.panel .newsletter-title {
+    font-size: var(--text-4xl);
+  }
+
+  .newsletter.panel .newsletter-text {
+    font-size: var(--text-xl);
+  }
+}
+
+@media (width >= 1024px) {
+  .newsletter .newsletter-content {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .newsletter .newsletter-input {
+    width: 468px;
+  }
+
+  .newsletter.panel .newsletter-content {
+    align-items: center;
+  }
+}

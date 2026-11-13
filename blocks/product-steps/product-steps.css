@@ -1,0 +1,179 @@
+/* Product Steps: intro + numbered preparation cards + note */
+
+/* product theme (page metadata Theme → body class); prohance is the default */
+.product-steps {
+  --brand: #00859e;
+  --brand-badge-bg: #c5f6f5;
+  --brand-badge-text: #00506a;
+  --step-card-bg: linear-gradient(145deg, #fff 0%, rgb(0 133 158 / 6%) 0.2%, #fbfaf6 100%);
+
+  margin-top: 52px;
+  padding-inline: 16px;
+  background-color: #fbfaf6;
+}
+
+body.prohance-dm .product-steps {
+  --brand: #1035c2;
+  --brand-badge-bg: #e9f3ff;
+  --brand-badge-text: #00318b;
+}
+
+body.prohance-hp .product-steps {
+  --brand: #d5584d;
+  --brand-badge-bg: #ffede9;
+  --brand-badge-text: #831a1d;
+  --step-card-bg: linear-gradient(145deg, #fff 0%, rgb(255 245 242 / 60%) 0.2%, #fbfaf6 100%);
+}
+
+/* shared product intro styles */
+.product-steps .product-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.375rem 1rem;
+  background-color: var(--brand-badge-bg);
+  color: var(--brand-badge-text);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1rem;
+}
+
+.product-steps .product-badge-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--brand);
+}
+
+.product-steps .product-heading {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.5rem;
+  margin-top: 18px;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 40px;
+  letter-spacing: -1.6px;
+}
+
+.product-steps .product-heading-line1 {
+  color: #0c121a;
+}
+
+.product-steps .product-heading-line2 {
+  color: var(--brand);
+  font-style: italic;
+}
+
+.product-steps .product-description {
+  max-width: 28rem;
+  margin-top: 1rem;
+  color: #575e69;
+  font-size: 14.9px;
+  line-height: 1.5rem;
+}
+
+/* steps */
+.product-steps .product-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 18px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product-steps .product-steps-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--brand) 18%, transparent);
+  border-radius: 2rem;
+  padding: 1rem 22px;
+  background-image: var(--step-card-bg);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
+}
+
+.product-steps .product-steps-number {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #575e69;
+  font-size: 10px;
+  line-height: 1.5rem;
+  letter-spacing: 2.2px;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.product-steps .product-steps-image {
+  position: relative;
+  aspect-ratio: 1;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  background-color: rgb(255 255 255 / 80%);
+  backdrop-filter: blur(4px);
+}
+
+.product-steps .product-steps-image picture,
+.product-steps .product-steps-image img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.product-steps .product-steps-image img {
+  object-fit: fill;
+  object-position: center;
+}
+
+.product-steps .product-steps-body h3 {
+  margin-bottom: 0.5rem;
+  color: #0c121a;
+  font-size: 23px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 2rem;
+  letter-spacing: normal;
+}
+
+.product-steps .product-steps-body p {
+  color: #575e69;
+  font-size: 13.1px;
+  line-height: 1.25rem;
+}
+
+.product-steps .product-steps-note {
+  color: #575e69;
+  font-size: 11.1px;
+  line-height: 1rem;
+}
+
+@media (width >= 640px) {
+  .product-steps {
+    padding-inline: 38px;
+  }
+
+  .product-steps .product-heading {
+    font-size: 42px;
+    line-height: 66px;
+  }
+}
+
+@media (width >= 768px) {
+  .product-steps .product-steps-grid {
+    margin-top: 9px;
+  }
+}
+
+@media (width >= 1280px) {
+  .product-steps .product-steps-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

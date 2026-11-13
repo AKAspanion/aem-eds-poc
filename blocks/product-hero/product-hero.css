@@ -1,0 +1,299 @@
+/* Product Hero: banner image with the product title, description and brochure link */
+
+/* product theme (page metadata Theme → body class); prohance is the default */
+.product-hero {
+  --brand: #00859e;
+  --brand-badge-bg: #c5f6f5;
+  --brand-badge-text: #00506a;
+
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: #fbfaf6;
+}
+
+body.prohance-dm .product-hero {
+  --brand: #1035c2;
+  --brand-badge-bg: #e9f3ff;
+  --brand-badge-text: #00318b;
+}
+
+body.prohance-hp .product-hero {
+  --brand: #d5584d;
+  --brand-badge-bg: #ffede9;
+  --brand-badge-text: #831a1d;
+}
+
+/* shared product intro styles */
+.product-hero .product-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.375rem 1rem;
+  background-color: var(--brand-badge-bg);
+  color: var(--brand-badge-text);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1rem;
+}
+
+.product-hero .product-badge-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--brand);
+}
+
+/* banner */
+.product-hero .product-hero-media {
+  position: relative;
+  width: 100%;
+  height: 872px;
+}
+
+.product-hero .product-hero-media picture,
+.product-hero .product-hero-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.product-hero .product-hero-media img {
+  object-fit: cover;
+}
+
+.product-hero .product-hero-media picture[hidden],
+.product-hero .product-hero-media [data-flavour-hidden] {
+  display: none;
+}
+
+/* text over the banner */
+.product-hero .product-hero-content {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+}
+
+.product-hero .product-hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding-inline: 1.5rem;
+}
+
+.product-hero h1.product-heading,
+.product-hero h2.product-heading {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.25rem;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -2.88px;
+}
+
+.product-hero .product-heading-line1 {
+  color: #0c121a;
+  line-height: 1.5;
+}
+
+.product-hero .product-heading-line2 {
+  color: var(--brand);
+  line-height: 38px;
+}
+
+.product-hero .product-description {
+  max-width: 28rem;
+  margin-top: 1.125rem;
+  margin-bottom: 392px;
+  color: #1f1e1e;
+  font-size: var(--text-sm);
+  line-height: 22px;
+}
+
+.product-hero .product-description p + p {
+  margin-top: 0.5rem;
+}
+
+/* brochure link */
+.product-hero .product-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-self: stretch;
+  gap: 0.625rem;
+  order: 2;
+}
+
+.product-hero .product-hero-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-height: 44px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  color: var(--brand);
+  font-size: var(--text-base);
+  font-weight: 500;
+  line-height: 1.25rem;
+  text-underline-offset: 4px;
+  transition: color 0.2s;
+}
+
+.product-hero .product-hero-link:hover {
+  color: color-mix(in srgb, var(--brand) 80%, transparent);
+  text-decoration: underline;
+}
+
+.product-hero .product-hero-link:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.product-hero .product-hero-link svg {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+/* flavour selector */
+.product-hero .product-hero-flavours {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  gap: 1.125rem;
+  order: 1;
+}
+
+.product-hero .product-hero-flavour {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #363636;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  cursor: pointer;
+}
+
+.product-hero .product-hero-flavour.is-checked {
+  color: var(--brand);
+}
+
+.product-hero .product-hero-flavour-dot {
+  position: relative;
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #0047bb;
+  border-radius: 9999px;
+}
+
+.product-hero .product-hero-flavour.is-checked .product-hero-flavour-dot {
+  border-color: var(--brand);
+}
+
+.product-hero .product-hero-flavour.is-checked .product-hero-flavour-dot::after {
+  content: '';
+  position: absolute;
+  inset: 3.5px;
+  border-radius: 9999px;
+  background-color: var(--brand);
+}
+
+.product-hero .product-hero-flavour:has(input:focus-visible) .product-hero-flavour-dot {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+@media (width >= 640px) {
+  .product-hero h1.product-heading,
+  .product-hero h2.product-heading {
+    margin-top: 0.625rem;
+  }
+
+  .product-hero .product-description {
+    margin-top: 0.875rem;
+    font-size: var(--text-lg);
+  }
+
+  .product-hero .product-hero-actions {
+    margin-top: 0.75rem;
+  }
+}
+
+@media (width >= 768px) {
+  .product-hero .product-hero-media {
+    height: auto;
+    aspect-ratio: 1980 / 1600;
+  }
+
+  .product-hero .product-hero-content {
+    top: 192px;
+  }
+
+  .product-hero .product-heading-line2 {
+    line-height: 1.2;
+  }
+
+  .product-hero .product-description {
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .product-hero .product-hero-actions {
+    justify-content: flex-start;
+    order: 0;
+  }
+
+  .product-hero .product-hero-link {
+    padding: 0;
+  }
+
+  .product-hero .product-hero-flavours {
+    justify-content: flex-start;
+  }
+}
+
+@media (width >= 1024px) {
+  .product-hero h1.product-heading,
+  .product-hero h2.product-heading {
+    font-size: 64px;
+  }
+
+  .product-hero .product-heading-line1 {
+    line-height: 76px;
+  }
+
+  .product-hero .product-heading-line2 {
+    line-height: 72px;
+  }
+
+  .product-hero .product-description {
+    margin-top: 2.5rem;
+    line-height: 29.25px;
+  }
+
+  .product-hero .product-hero-flavours {
+    margin-top: 0.25rem;
+  }
+}
+
+@media (width >= 1280px) {
+  .product-hero .product-hero-media {
+    aspect-ratio: 1980 / 1120;
+  }
+
+  .product-hero .product-description {
+    margin-top: 1.5rem;
+  }
+}

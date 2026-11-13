@@ -143,11 +143,40 @@ function decorateButtons(main) {
 }
 
 /**
+ * Local drafts only: turn authored `:icon-name:` text into icon spans, which the
+ * Edge Delivery pipeline does server-side for real content.
+ * @param {Element} main The container element
+ */
+function decorateIconTokens(main) {
+  if (!['localhost', '127.0.0.1'].includes(window.location.hostname)) return;
+  const walker = document.createTreeWalker(main, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) {
+    if (/:[a-z0-9-]+:/.test(walker.currentNode.nodeValue)) nodes.push(walker.currentNode);
+  }
+  nodes.forEach((node) => {
+    const frag = document.createDocumentFragment();
+    node.nodeValue.split(/(:[a-z0-9-]+:)/).forEach((part) => {
+      const m = part.match(/^:([a-z0-9-]+):$/);
+      if (m) {
+        const span = document.createElement('span');
+        span.className = `icon icon-${m[1]}`;
+        frag.append(span);
+      } else if (part) {
+        frag.append(part);
+      }
+    });
+    node.replaceWith(frag);
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
+  decorateIconTokens(main);
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
@@ -203,12 +232,28 @@ async function loadLazy(doc) {
  * Loads everything that happens a lot later,
  * without impacting the user experience.
  */
+/**
+ * Links to /modals/<name> open that page as a modal dialog (blocks/modal).
+ */
+function initModalLinks() {
+  document.addEventListener('click', async (e) => {
+    const link = e.target.closest('a[href*="/modals/"]');
+    if (!link) return;
+    const url = new URL(link.href, window.location.href);
+    if (url.origin !== window.location.origin) return;
+    e.preventDefault();
+    const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
+    openModal(url.pathname);
+  });
+}
+
 function loadDelayed() {
   import('./consent-check.js');
   // load anything that can be postponed to the latest here
 }
 
 async function loadPage() {
+  initModalLinks();
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();

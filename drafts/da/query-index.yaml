@@ -1,0 +1,38 @@
+version: 1
+
+indices:
+  blogs:
+    include:
+      - /nutriverse/blogs/**
+    exclude:
+      - /nutriverse/blogs
+      - /nutriverse/blogs/query-index.json
+    target: /nutriverse/blogs/query-index.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, "content")
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, "content")
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, "content")
+      category:
+        select: head > meta[name="category"]
+        value: attribute(el, "content")
+      date:
+        select: head > meta[name="date"]
+        value: attribute(el, "content")
+      readtime:
+        select: head > meta[name="read-time"]
+        value: attribute(el, "content")
+      tags:
+        select: head > meta[property="article:tag"], head > meta[name="tags"]
+        values: attribute(el, "content")
+      template:
+        select: head > meta[name="template"]
+        value: attribute(el, "content")
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")

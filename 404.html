@@ -7,48 +7,125 @@
     content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none';"
     move-to-http-header="true"
   >
-  <title>Page not found</title>
+  <title>Page not found | Prohance</title>
   <script nonce="aem" type="text/javascript">
     window.isErrorPage = true;
     window.errorCode = '404';
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta property="og:title" content="Page not found">
+  <meta name="robots" content="noindex">
+  <meta property="og:title" content="Page not found | Prohance">
   <script nonce="aem" src="/scripts/scripts.js" type="module"></script>
-  <script nonce="aem" type="module">
-    window.addEventListener('load', () => {
-      if (document.referrer) {
-        const { origin, pathname } = new URL(document.referrer);
-        if (origin === window.location.origin) {
-          const backBtn = document.createElement('a');
-          backBtn.classList.add('button', 'error-button-back');
-          backBtn.href = pathname;
-          backBtn.textContent = 'Go back';
-          backBtn.title = 'Go back';
-          const btnContainer = document.querySelector('.button-container');
-          btnContainer.append(backBtn);
-        }
-      }
-    });
-  </script>
   <script nonce="aem" type="module">
     import { sampleRUM } from '/scripts/aem.js';
     sampleRUM('404', { source: document.referrer });
   </script>
+  <link rel="preload" as="image" href="/images/errors/page-not-found.webp" type="image/webp" fetchpriority="high">
   <link rel="stylesheet" href="/styles/styles.css">
   <style>
+    /* same layout as the coming-soon block (staging ErrorState) */
     main.error {
-      min-height: calc(100vh - var(--nav-height));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      padding: 8rem 1rem 5rem;
+      background-color: #fff;
+    }
+
+    main.error .section,
+    main.error .default-content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.875rem;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    main.error .error-image {
+      position: relative;
+      width: 317px;
+      height: 188px;
+      overflow: hidden;
+    }
+
+    main.error .error-image img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 62%;
+    }
+
+    main.error .error-message {
+      margin-bottom: -0.25rem;
+      color: #0c121a;
+      font-size: var(--text-xl);
+      font-weight: 500;
+      line-height: 2rem;
+      letter-spacing: -0.48px;
+    }
+
+    main.error .error-description {
+      max-width: 277px;
+      color: rgb(12 18 26 / 85%);
+      font-size: var(--text-base);
+      line-height: 1.5rem;
+    }
+
+    main.error a.error-button-home {
       display: flex;
       align-items: center;
+      gap: 0.5rem;
+      border-radius: 9999px;
+      padding: 0.75rem 1.75rem;
+      background-color: #0047bb;
+      color: #fff;
+      font-size: var(--text-base);
+      font-weight: 500;
+      line-height: 21.6px;
+      text-decoration: none;
+      transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    main.error .error-number {
-      width: 100%;
+    main.error a.error-button-home:hover {
+      background-color: rgb(0 71 187 / 90%);
     }
 
-    main.error .error-number text {
-      font-family: monospace;
+    main.error a.error-button-home:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0047bb;
+    }
+
+    main.error a.error-button-home img {
+      flex-shrink: 0;
+      width: 15px;
+      height: 13px;
+    }
+
+    @media (width >= 768px) {
+      main.error .error-image {
+        width: 425px;
+        height: 292px;
+      }
+
+      main.error .error-image img {
+        object-position: center;
+      }
+
+      main.error .error-message {
+        font-size: 22px;
+      }
+
+      main.error .error-description {
+        max-width: none;
+        font-size: var(--text-lg);
+        line-height: normal;
+      }
     }
   </style>
   <link rel="stylesheet" href="/styles/lazy-styles.css">
@@ -58,12 +135,16 @@
   <header></header>
   <main class="error">
     <div class="section">
-      <svg viewBox="1 0 38 18" class="error-number">
-        <text x="0" y="17">404</text>
-      </svg>
-      <h2 class="error-message">Page Not Found</h2>
+      <p class="error-image">
+        <picture>
+          <source type="image/webp" srcset="/images/errors/page-not-found.webp">
+          <img src="/images/errors/page-not-found.png" alt="404 — page not found" width="1402" height="1122" fetchpriority="high">
+        </picture>
+      </p>
+      <h1 class="error-message">Oops! Page can’t be found.</h1>
+      <p class="error-description">The page you are looking for doesn’t exist or has been moved.</p>
       <p class="button-container">
-        <a href="/" class="button secondary error-button-home">Go home</a>
+        <a href="/" class="error-button-home"><img src="/images/errors/arrow-left.svg" alt="" aria-hidden="true" width="15" height="13"><span>Back to Homepage</span></a>
       </p>
     </div>
   </main>

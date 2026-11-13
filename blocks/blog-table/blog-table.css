@@ -1,0 +1,28 @@
+/* Blog table: bordered data table that scrolls sideways on narrow screens */
+.blog-table .blog-table-scroll {
+  margin: 8px 0;
+  overflow-x: auto;
+}
+
+.blog-table table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--color-charcoal);
+  font-size: 15px;
+  line-height: 24px;
+  text-align: left;
+}
+
+.blog-table :is(th, td) {
+  border: 1px solid var(--color-border);
+  padding: 10px 8px;
+  font-size: var(--text-sm);
+  font-weight: 400;
+  line-height: 20px;
+  vertical-align: top;
+}
+
+.blog-table th strong,
+.blog-table td strong {
+  font-weight: 700;
+}

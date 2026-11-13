@@ -1,0 +1,97 @@
+/* Contact Info cards (ContactInfoCards.tsx): mt-10 grid gap-4 sm:2 cols xl:4 cols */
+.contact-info {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  width: 100%;
+  margin: 2.5rem auto 0;
+  padding-inline: 1rem;
+}
+
+.contact-info .contact-info-card {
+  border: 1px solid #e0ded7;
+  border-radius: 2rem;
+  padding: 1.5rem;
+  background-color: #fff;
+  box-shadow: 0 8px 24px 0 rgb(17 22 31 / 6%), 0 1px 2px 0 rgb(17 22 31 / 4%);
+}
+
+.contact-info .contact-info-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 20px;
+  background-color: rgb(16 53 194 / 8%);
+}
+
+.contact-info .contact-info-icon img {
+  width: 20px;
+  height: 20px;
+}
+
+.contact-info .contact-info-title {
+  margin: 1.25rem 0 0;
+  color: #1035c2;
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: 1.75rem;
+  letter-spacing: normal;
+}
+
+.contact-info .contact-info-value {
+  margin: 0.25rem 0 0;
+  color: #0c121a;
+  font-size: var(--text-sm);
+  line-height: 1.25rem;
+  overflow-wrap: anywhere;
+}
+
+.contact-info .contact-info-note {
+  margin: 0.125rem 0 0;
+  color: #575e69;
+  font-size: var(--text-xs);
+  line-height: 1rem;
+}
+
+.contact-info a:any-link {
+  color: inherit;
+}
+
+.contact-info a:any-link:hover {
+  text-decoration: underline;
+}
+
+@media (width >= 640px) {
+  .contact-info {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 640px;
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (width >= 768px) {
+  .contact-info {
+    max-width: 768px;
+  }
+}
+
+@media (width >= 1024px) {
+  .contact-info {
+    max-width: 1024px;
+  }
+}
+
+@media (width >= 1280px) {
+  .contact-info {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: 1280px;
+  }
+}
+
+@media (width >= 1536px) {
+  .contact-info {
+    max-width: 1536px;
+  }
+}

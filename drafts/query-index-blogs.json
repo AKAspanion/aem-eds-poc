@@ -1,0 +1,68 @@
+{
+  "total": 5,
+  "offset": 0,
+  "limit": 5,
+  "data": [
+    {
+      "path": "/drafts/pages/blog-create-your-personalize",
+      "title": "Create Your Personalised Balanced Diet Chart",
+      "description": "You may be aware of the importance of consuming healthy, balanced meals, but people often struggle with how to create a balanced diet chart.",
+      "image": "https://publish-p62213-e510912.adobeaemcloud.com/adobe/dynamicmedia/deliver/dm-aid--849e3138-ab52-4517-a3e7-da4a2aad3068/balanced_diet_chart_for_healthy_living.png",
+      "category": "Maintaining Active Lifestyle",
+      "date": "March 7, 2025",
+      "readtime": "5 min read",
+      "tags": "[\"diet\", \"lifestyle\"]",
+      "lastModified": "1731456000",
+      "template": "blog-article"
+    },
+    {
+      "path": "/drafts/pages/blog-the-food-pyramid-a-guide-to-nutritional-balance",
+      "title": "The Food Pyramid: A Guide to Nutritional Balance",
+      "description": "It is often said that our diet shapes who we are. In fact, what we feed our body impacts our overall health and well-being. Eating healthy and…",
+      "image": "https://publish-p62213-e510912.adobeaemcloud.com/adobe/dynamicmedia/deliver/dm-aid--cb7517df-c50a-4e31-90b6-625c399afe0c/food_pyramid.png",
+      "category": "Maintaining Active Lifestyle",
+      "date": "March 7, 2025",
+      "readtime": "4 min read",
+      "tags": "[\"food\", \"diet\"]",
+      "lastModified": "1731456000",
+      "template": "blog-article"
+    },
+    {
+      "path": "/drafts/pages/blog-boost-your-health-with-fibre-rich-foods",
+      "title": "Boost Your Health with Fibre-Rich Foods",
+      "description": "A diet that contains plenty of foods rich in dietary fibre can do wonders to boost your health. Many people think dietary fibre’s benefits are limited to…",
+      "image": "https://publish-p62213-e510912.adobeaemcloud.com/adobe/dynamicmedia/deliver/dm-aid--7768e664-8b26-4d8b-9de0-c9dd0784e678/fiber_rich_food_1536x1050.png",
+      "category": "Maintaining Active Lifestyle",
+      "date": "February 24, 2025",
+      "readtime": "8 min read",
+      "tags": "[\"diet\"]",
+      "lastModified": "1731456000",
+      "template": "blog-article"
+    },
+    {
+      "path": "/drafts/pages/blog-how-many-calories-should-i-eat-a-day",
+      "title": "How Many Calories Should I Eat a Day?",
+      "description": "Have you ever wondered if a 500-calorie chocolate cake fits within your daily calorie budget? Or maybe you are trying to find out, ‘How much calories should…",
+      "image": "https://publish-p62213-e510912.adobeaemcloud.com/adobe/dynamicmedia/deliver/dm-aid--05483f95-db67-4668-8901-37c6013845e9/how_many_calories_a_day.png",
+      "category": "Maintaining Active Lifestyle",
+      "date": "December 11, 2024",
+      "readtime": "6 min read",
+      "tags": "[\"calories\", \"calories a day\"]",
+      "lastModified": "1731456000",
+      "template": "blog-article"
+    },
+    {
+      "path": "/drafts/pages/blog-how-to-calculate-protein",
+      "title": "How to Calculate Protein?",
+      "description": "A crucial macronutrient—protein plays an important role in the body—building and repairing muscles is just one function of protein. But how much protein do…",
+      "image": "https://publish-p62213-e510912.adobeaemcloud.com/adobe/dynamicmedia/deliver/dm-aid--2b012b48-2468-41a2-a711-915cba9dc328/how_to_calculate_protein.png",
+      "category": "Maintaining Active Lifestyle",
+      "date": "December 11, 2024",
+      "readtime": "5 min",
+      "tags": "[\"Protein\", \"Calculate Protein\"]",
+      "lastModified": "1731456000",
+      "template": "blog-article"
+    }
+  ],
+  ":type": "sheet"
+}
