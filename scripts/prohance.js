@@ -155,10 +155,10 @@ export function initCarousel(track, opts = {}) {
 }
 
 /**
- * Submits a form's fields as JSON. The endpoint comes from the form's
- * data-action (authored per block). Until the backend exists (App Builder
- * action), forms without an endpoint resolve as a simulated success so the UI
- * can be reviewed; this is logged so it is never mistaken for a real submit.
+ * Submits a form to the Adobe Forms Submission Service. The form's data-action
+ * (the block's `Action` row) names a form definition sheet, e.g. /forms/contact.
+ * Forms without an Action resolve as a simulated success so the UI can be
+ * reviewed; this is logged so it is never mistaken for a real submit.
  * @param {HTMLFormElement} form
  * @returns {Promise<{ ok: boolean, simulated?: boolean }>}
  */
@@ -192,15 +192,12 @@ export async function submitForm(form) {
 
   if (!action) {
     // eslint-disable-next-line no-console
-    console.info('[prohance] form has no endpoint yet; simulating success', form.name || form.id, data);
+    console.info('[prohance] form has no Action; simulating success', form.name || form.id, data);
     return { ok: true, simulated: true };
   }
-  const res = await fetch(action, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  return { ok: res.ok };
+  // eslint-disable-next-line no-console
+  console.error('[prohance] form Action must be a /forms/<name> definition, got', action);
+  return { ok: false };
 }
 
 /** Reads a block's leading key/value config rows (2 cells, plain-text key). */

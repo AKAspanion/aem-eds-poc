@@ -6,7 +6,7 @@
  *         optionally followed by ", coming soon" (card shown but not selectable)
  *   Row: form heading — H3 (e.g. General Details)
  *   Row: Cities | list (or comma separated) of cities for the City select
- *   Row: Action | form endpoint URL (optional; without it submit is simulated)
+ *   Row: Action | /forms/trial-request (form definition; without it submit is simulated)
  * Submitted fields match TrialRequestInput (src/services/forms/types.ts):
  *   fullName, email, phone, address, city, pincode, product, website (honeypot)
  */

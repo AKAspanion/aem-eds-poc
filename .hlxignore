@@ -7,4 +7,3 @@ package-lock.json
 test/*
 sync-block-collection.sh
 drafts/*
-forms-api/

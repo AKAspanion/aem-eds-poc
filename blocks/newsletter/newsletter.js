@@ -8,7 +8,7 @@
  *   Source      | videos        sent as "source" (footer, homeNutriverse, blog, videos)
  *   Success     | Thank you for subscribing!
  *   Error       | Something went wrong. Please try again.
- *   Action      | https://...   endpoint (without it the submit is simulated)
+ *   Action      | /forms/newsletter (form definition; without it the submit is simulated)
  * Variant: newsletter (panel) = the blog look (dark photo, bold heading, form on a
  * frosted panel). Default = the videos look (gradient overlay, glass pill form).
  * Posts { email, source, website } (website is the honeypot) via submitForm.

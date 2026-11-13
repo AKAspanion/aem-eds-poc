@@ -2,7 +2,7 @@
  * Contact Hero: eyebrow, two-line title, image and the contact enquiry form.
  *   Row 1: text — eyebrow <p>, H1 (line break between the two lines; the
  *          second line is blue except its first word), form intro <p> | image
- *   Row (optional): Action | form endpoint URL (without it submit is simulated)
+ *   Row (optional): Action | /forms/contact (form definition; without it submit is simulated)
  * Submitted fields match ContactEnquiryInput (src/services/forms/types.ts):
  *   fullName, email, phone, age, gender, consentAccepted, website (honeypot)
  */
