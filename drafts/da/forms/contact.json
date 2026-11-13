@@ -1,0 +1,64 @@
+{
+  "total": 7,
+  "offset": 0,
+  "limit": 7,
+  "data": [
+    {
+      "Name": "fullName",
+      "Type": "text",
+      "Label": "Full name",
+      "Mandatory": "true",
+      "Value": "",
+      "Action": ""
+    },
+    {
+      "Name": "email",
+      "Type": "email",
+      "Label": "Email address",
+      "Mandatory": "true",
+      "Value": "",
+      "Action": ""
+    },
+    {
+      "Name": "phone",
+      "Type": "tel",
+      "Label": "Phone number",
+      "Mandatory": "true",
+      "Value": "",
+      "Action": ""
+    },
+    {
+      "Name": "age",
+      "Type": "number",
+      "Label": "Age",
+      "Mandatory": "true",
+      "Value": "",
+      "Action": ""
+    },
+    {
+      "Name": "gender",
+      "Type": "radio",
+      "Label": "Gender",
+      "Mandatory": "true",
+      "Value": "female",
+      "Action": ""
+    },
+    {
+      "Name": "consentAccepted",
+      "Type": "checkbox",
+      "Label": "Consent",
+      "Mandatory": "true",
+      "Value": "true",
+      "Action": ""
+    },
+    {
+      "Name": "submit",
+      "Type": "submit",
+      "Label": "Send message",
+      "Mandatory": "",
+      "Value": "Thank you!",
+      "Action": "https://docs.google.com/spreadsheets/d/1vpcGsHsrtibNcTPRX4XHOtKjqi-W-cD-hRDt3fi7cNw/edit"
+    }
+  ],
+  ":type": "sheet"
+}

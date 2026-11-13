@@ -165,6 +165,27 @@ export function initCarousel(track, opts = {}) {
 export async function submitForm(form) {
   const data = Object.fromEntries(new FormData(form).entries());
   const { action } = form.dataset;
+
+  // Adobe Forms Submission Service: an Action of /forms/<name> points at a
+  // published form definition sheet whose submit row names the destination
+  // spreadsheet. Rows land in that spreadsheet's `incoming` tab.
+  const formsPath = action && new URL(action, window.location.href).pathname;
+  if (formsPath && formsPath.startsWith('/forms/')) {
+    const { website, ...fields } = data;
+    // honeypot filled: a bot. Pretend success, send nothing.
+    if (website) return { ok: true };
+    const id = btoa(`${formsPath.replace(/\.json$/, '')}.json`);
+    const res = await fetch(`https://forms.adobe.com/adobe/forms/af/submit/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-adobe-form-hostname': window.location.hostname,
+      },
+      body: JSON.stringify({ data: fields }),
+    });
+    return { ok: res.ok };
+  }
+
   if (!action) {
     // eslint-disable-next-line no-console
     console.info('[prohance] form has no endpoint yet; simulating success', form.name || form.id, data);
