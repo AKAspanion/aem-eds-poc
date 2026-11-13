@@ -80,7 +80,6 @@ export function buildPicture(img, opts = {}) {
   }
   const out = document.createElement('img');
   const base = mobile || img;
-  out.src = imageUrl(base.src, (mobile ? mobileWidths : widths).at(-1)) || base.src;
   out.alt = alt ?? img.alt ?? '';
   if (img.width) out.width = img.width;
   if (img.height) out.height = img.height;
@@ -88,6 +87,9 @@ export function buildPicture(img, opts = {}) {
   if (eager) out.fetchPriority = 'high';
   out.decoding = 'async';
   picture.append(out);
+  // src last, once the img is inside the <picture>: WebKit fetches as soon as
+  // src is set, which otherwise downloads the fallback on top of the webp
+  out.src = imageUrl(base.src, (mobile ? mobileWidths : widths).at(-1)) || base.src;
   return picture;
 }
 

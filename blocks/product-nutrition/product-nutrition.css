@@ -2,7 +2,8 @@
 
 /* product theme (page metadata Theme → body class); prohance is the default */
 .product-nutrition {
-  --brand: #00859e;
+  /* brand teal darkened from #00859e: text/active tab need 4.5:1 on white */
+  --brand: #007c93;
   --brand-badge-bg: #c5f6f5;
   --brand-badge-text: #00506a;
   --nutrition-panel-bg:
@@ -24,7 +25,8 @@ body.prohance-dm .product-nutrition {
 }
 
 body.prohance-hp .product-nutrition {
-  --brand: #d5584d;
+  /* darkened from #d5584d (3.9:1) to reach 4.5:1 with white */
+  --brand: #c4473c;
   --brand-badge-bg: #ffede9;
   --brand-badge-text: #831a1d;
   --nutrition-panel-bg:
@@ -104,7 +106,7 @@ body.prohance-hp .product-nutrition {
   border-radius: 9999px;
   padding: 0.625rem 1.25rem;
   background-color: #efece6;
-  color: #6b7280;
+  color: #5f6670; /* was #6b7280: 4.1:1 on #efece6 */
   font-size: var(--text-xs);
   font-weight: 500;
   line-height: 1rem;

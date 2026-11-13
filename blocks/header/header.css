@@ -146,6 +146,19 @@ header .nav-drop > button {
 
 header .nav-drop > button { padding: 16px 0; }
 
+/* 768–1023px: the five links at 16px with 32px gaps do not fit beside the logo
+   (labels wrapped to two lines and "Home" touched the logo) */
+@media (width >= 768px) and (width < 1024px) {
+  header .nav-bar { gap: 16px; }
+  header .nav-links { gap: 16px; }
+
+  header .nav-links > li > a,
+  header .nav-drop > button {
+    font-size: var(--text-sm);
+    white-space: nowrap;
+  }
+}
+
 header .nav-links > li > a:hover,
 header .nav-drop > button:hover { color: var(--color-primary); }
 
@@ -258,3 +271,13 @@ header .nav-mobile-menu .nav-dropdown a {
 }
 
 header .nav-mobile-menu .nav-dropdown a:hover { background: none; }
+
+/* the bar and mobile menu are legible only through backdrop blur: Safari < 18
+   (unprefixed backdrop-filter) or "reduce transparency" get a solid panel */
+@supports not (backdrop-filter: blur(1px)) {
+  header .nav-glass { background-color: rgb(255 255 255 / 94%); }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  header .nav-glass { background-color: rgb(255 255 255 / 96%); }
+}

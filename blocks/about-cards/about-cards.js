@@ -9,6 +9,20 @@ import { buildPicture } from '../../scripts/prohance.js';
 
 const HEADINGS = 'h1, h2, h3, h4, h5, h6';
 
+/**
+ * Card title level: one below the block's own heading, or below the nearest
+ * h1/h2 before the block (so cards straight after the page h1 are h2s).
+ */
+function cardHeadingLevel(block, hasIntro) {
+  if (hasIntro) return 3;
+  const before = [...document.querySelectorAll('main h1, main h2')]
+    .filter((h) => !block.contains(h)
+      // eslint-disable-next-line no-bitwise
+      && (h.compareDocumentPosition(block) & Node.DOCUMENT_POSITION_FOLLOWING));
+  const last = before.pop();
+  return last ? Number(last.tagName[1]) + 1 : 2;
+}
+
 function buildIntro(row) {
   const intro = document.createElement('div');
   intro.className = 'about-cards-intro';
@@ -28,7 +42,7 @@ function buildIntro(row) {
   return intro;
 }
 
-function buildCard(row) {
+function buildCard(row, level) {
   const li = document.createElement('li');
   const img = row.querySelector('img');
   if (img) {
@@ -43,7 +57,7 @@ function buildCard(row) {
 
   const body = document.createElement('div');
   body.className = 'about-cards-body';
-  const title = document.createElement('h3');
+  const title = document.createElement(`h${level}`);
   const heading = row.querySelector(HEADINGS);
   const cells = [...row.children].filter((c) => c.textContent.trim());
   if (heading) {
@@ -74,12 +88,15 @@ export default function decorate(block) {
   const list = document.createElement('ul');
   list.className = 'about-cards-list';
 
+  const isIntro = (row, i) => i === 0 && row.querySelector(HEADINGS)
+    && !row.querySelector('img') && row.children.length === 1;
+  const level = cardHeadingLevel(block, [...block.children].some(isIntro));
+
   [...block.children].forEach((row, i) => {
-    const heading = row.querySelector(HEADINGS);
-    if (i === 0 && heading && !row.querySelector('img') && row.children.length === 1) {
+    if (isIntro(row, i)) {
       inner.append(buildIntro(row));
     } else if (row.textContent.trim() || row.querySelector('img')) {
-      list.append(buildCard(row));
+      list.append(buildCard(row, level));
     }
   });
 

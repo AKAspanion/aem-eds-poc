@@ -97,7 +97,7 @@
 /* fallback font keeps layout stable until Neurial Grotesk loads */
 @font-face {
   font-family: neurial-grotesk-fallback;
-  size-adjust: 100%;
+  size-adjust: 103%;
   src: local('Arial');
 }
 
@@ -285,6 +285,8 @@ main > .section > .default-content-wrapper {
   position: relative;
   border-radius: 24px;
   background: transparent;
+  /* stylelint-disable-next-line property-no-vendor-prefix -- Safari 17 and older */
+  -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
 }
 

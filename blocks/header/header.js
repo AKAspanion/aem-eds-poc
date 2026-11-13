@@ -1,5 +1,6 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { buildPicture } from '../../scripts/prohance.js';
 
 // md breakpoint, same as the Next.js header
 const isDesktop = window.matchMedia('(width >= 768px)');
@@ -114,8 +115,11 @@ export default async function decorate(block) {
     brandLink.closest('.button-wrapper')?.classList.remove('button-wrapper');
     const img = brandLink.querySelector('img');
     if (img) {
-      img.loading = 'eager';
-      img.fetchPriority = 'high';
+      // the authored picture serves a 2000px logo for a ~128px slot; not
+      // high priority either, so it does not compete with the page's LCP image
+      const picture = buildPicture(img, { widths: [160, 320], sizes: '128px', alt: img.alt });
+      picture.querySelector('img').loading = 'eager';
+      (img.closest('picture') || img).replaceWith(picture);
     }
     start.append(brandLink);
   }

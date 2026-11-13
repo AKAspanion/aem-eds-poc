@@ -1,3 +1,5 @@
+import { buildPicture } from '../../scripts/prohance.js';
+
 const ARROW_RIGHT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
 
 /**
@@ -7,20 +9,16 @@ const ARROW_RIGHT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
  * @returns {HTMLPictureElement}
  */
 function buildBackground([desktop, mobile]) {
-  const picture = document.createElement('picture');
+  // responsive webp (the authored <img> src is a 750px PNG, ~0.5 MB here)
+  const picture = buildPicture(desktop, {
+    mobile,
+    widths: [1200, 1800],
+    mobileWidths: [400, 800],
+    sizes: '(width >= 768px) 90vw, 100vw',
+    breakpoint: '(min-width: 768px)',
+    alt: desktop.alt || '',
+  });
   picture.className = 'about-preview-bg';
-  if (mobile) {
-    const source = document.createElement('source');
-    source.media = '(min-width: 768px)';
-    source.srcset = desktop.src;
-    picture.append(source);
-  }
-  const img = document.createElement('img');
-  img.src = (mobile || desktop).src;
-  img.alt = desktop.alt || '';
-  img.loading = 'lazy';
-  img.decoding = 'async';
-  picture.append(img);
   return picture;
 }
 

@@ -34,20 +34,22 @@ function imageUrl(src, width, format) {
 
 function buildPicture(img) {
   const picture = document.createElement('picture');
-  const widths = [400, 750];
+  const widths = [400, 600, 750];
   if (imageUrl(img.src, widths[0], 'webp')) {
     const source = document.createElement('source');
     source.type = 'image/webp';
     source.srcset = widths.map((w) => `${imageUrl(img.src, w, 'webp')} ${w}w`).join(', ');
-    source.sizes = '(width >= 768px) 33vw, 100vw';
+    source.sizes = '(width >= 768px) 25vw, 80vw';
     picture.append(source);
   }
   const out = document.createElement('img');
-  out.src = imageUrl(img.src, 750) || img.src;
   out.alt = img.alt || '';
   out.loading = 'lazy';
   out.decoding = 'async';
   picture.append(out);
+  // src last, once the img is inside the <picture>: WebKit starts fetching as soon as
+  // src is set, so an earlier src downloads the PNG fallback as well as the webp
+  out.src = imageUrl(img.src, 750) || img.src;
   return picture;
 }
 

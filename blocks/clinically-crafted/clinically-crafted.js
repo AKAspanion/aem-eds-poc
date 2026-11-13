@@ -67,12 +67,14 @@ function buildSlide(desktop, mobile) {
   const small = mobile || desktop;
   addSource(picture, small, mobile ? [640, 1016] : [640, 1200, 1800], null, mobile ? '100vw' : '(width >= 768px) 75vw, 100vw');
   const img = document.createElement('img');
-  img.src = imageUrl(small.src, 1200) || small.src;
   img.alt = desktop.alt || small.alt || '';
   img.loading = 'lazy';
   img.decoding = 'async';
   ['width', 'height'].forEach((a) => { if (small.getAttribute(a)) img.setAttribute(a, small.getAttribute(a)); });
   picture.append(img);
+  // src last, once the img is inside the <picture>: WebKit starts fetching as soon as
+  // src is set, so an earlier src downloads the PNG fallback as well as the webp
+  img.src = imageUrl(small.src, 1200) || small.src;
   return el('li', 'cc-slide', picture);
 }
 

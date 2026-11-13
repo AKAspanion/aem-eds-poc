@@ -138,7 +138,7 @@ footer .footer-column {
   gap: 40px;
 }
 
-footer .footer-column h4 {
+footer .footer-column .footer-heading {
   color: #fff;
   font-size: 20px;
   font-weight: 500;

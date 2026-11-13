@@ -20,8 +20,15 @@ function initScrub(wrapper, video) {
     ticking = false;
     if (!Number.isFinite(video.duration) || !video.duration) return;
     const rect = wrapper.getBoundingClientRect();
-    const total = rect.height - window.innerHeight;
-    const progress = total > 0 ? Math.min(Math.max(-rect.top / total, 0), 1) : 0;
+    const vh = window.innerHeight;
+    const total = rect.height - vh;
+    // sticky layout (>= 768px): the wrapper is taller than the viewport and the
+    // stage is pinned while it scrolls. Stacked layout (mobile): the wrapper is
+    // about one screen tall, so scrub while it scrolls through the viewport
+    // instead (from its top at 80% of the screen until its bottom reaches 80%);
+    // otherwise progress stayed 0 and mobile only ever showed the first frame.
+    const raw = total > vh * 0.25 ? -rect.top / total : (vh * 0.8 - rect.top) / rect.height;
+    const progress = Math.min(Math.max(raw, 0), 1);
     const time = progress * video.duration;
     if (Math.abs(video.currentTime - time) > 0.05) video.currentTime = time;
   };

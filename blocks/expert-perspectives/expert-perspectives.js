@@ -1,3 +1,5 @@
+import { buildPicture } from '../../scripts/prohance.js';
+
 const ARROW_RIGHT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
 const PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>';
 const CLOSE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
@@ -52,7 +54,7 @@ function createModal(block) {
   dialog.setAttribute('aria-labelledby', titleId);
   dialog.innerHTML = `<div class="expert-perspectives-modal-panel">
     <div class="expert-perspectives-modal-header">
-      <h3 id="${titleId}"></h3>
+      <h2 id="${titleId}"></h2>
       <button type="button" class="expert-perspectives-modal-close" aria-label="Close video">${CLOSE}</button>
     </div>
     <div class="expert-perspectives-modal-media"></div>
@@ -70,7 +72,7 @@ function createModal(block) {
 
 function openVideo(block, video) {
   const dialog = block.querySelector('.expert-perspectives-modal') || createModal(block);
-  dialog.querySelector('h3').textContent = video.title;
+  dialog.querySelector('h2').textContent = video.title;
   const desc = dialog.querySelector('.expert-perspectives-modal-desc');
   desc.textContent = [video.name, video.role].filter(Boolean).join(', ');
   desc.hidden = !desc.textContent;
@@ -182,9 +184,11 @@ export default function decorate(block) {
     const thumb = document.createElement('div');
     thumb.className = 'expert-perspectives-thumb';
     if (video.img) {
-      const picture = video.img.closest('picture') || video.img;
-      video.img.loading = 'lazy';
-      thumb.append(picture);
+      // the authored picture serves 2000px on desktop for a ~380px card
+      thumb.append(buildPicture(video.img, {
+        widths: [400, 600, 800],
+        sizes: '(width >= 768px) 28vw, 92vw',
+      }));
     }
     const play = document.createElement('button');
     play.type = 'button';

@@ -200,6 +200,11 @@
   height: 2.5rem;
 }
 
+/* the <picture> is layout-neutral: the img stays the flex item */
+.hero .hero-tab-image picture {
+  display: contents;
+}
+
 .hero .hero-tab-image img {
   max-width: 100%;
   height: auto;

@@ -10,6 +10,7 @@ import {
   loadSections,
   loadCSS,
   buildBlock,
+  getMetadata,
 } from './aem.js';
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
@@ -185,6 +186,64 @@ export function decorateMain(main) {
 }
 
 /**
+ * JSON-LD structured data, matching the Next.js site. Types come from a `Schema`
+ * metadata row (comma list) or default by path. Blog articles add their own
+ * BlogPosting in blocks/blog-listing.
+ */
+function addStructuredData() {
+  const meta = (sel) => document.head.querySelector(sel)?.content || undefined;
+  const page = {
+    name: meta('meta[property="og:title"]') || document.title,
+    description: meta('meta[name="description"]'),
+    url: document.querySelector('link[rel="canonical"]')?.href || window.location.href.split('?')[0],
+    image: meta('meta[property="og:image"]'),
+  };
+  const { pathname } = window.location;
+  const defaults = {
+    '/': ['Organization', 'WebSite', 'FAQPage'],
+    '/about-us': ['AboutPage'],
+    '/contact-us': ['ContactPage'],
+    '/nutriverse/videos': ['VideoGallery'],
+  };
+  let types = (getMetadata('schema') || '').split(',').map((t) => t.trim()).filter(Boolean);
+  if (!types.length) {
+    types = defaults[pathname.replace(/\/$/, '') || '/']
+      || (pathname.startsWith('/products/') ? ['Product'] : []);
+  }
+  const brand = { '@type': 'Organization', name: 'Prohance' };
+  const build = {
+    Organization: () => ({
+      '@type': 'Organization', name: 'Prohance', description: page.description, url: page.url, logo: page.image,
+    }),
+    WebSite: () => ({
+      '@type': 'WebSite', name: page.name, description: page.description, url: page.url, publisher: brand,
+    }),
+    FAQPage: () => {
+      const faqs = [...document.querySelectorAll('.faq details.faq-item')].map((d) => ({
+        '@type': 'Question',
+        name: d.querySelector('.faq-question')?.textContent.trim(),
+        acceptedAnswer: { '@type': 'Answer', text: d.querySelector('.faq-answer')?.textContent.trim() },
+      })).filter((q) => q.name && q.acceptedAnswer.text);
+      return faqs.length ? { '@type': 'FAQPage', mainEntity: faqs } : null;
+    },
+    Product: () => ({
+      '@type': 'Product', name: page.name, description: page.description, image: page.image, url: page.url, brand: { '@type': 'Brand', name: 'Prohance' },
+    }),
+  };
+  types.forEach((type) => {
+    const json = build[type] ? build[type]() : {
+      '@type': type, name: page.name, description: page.description, url: page.url,
+    };
+    if (!json) return;
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.dataset.schema = type;
+    script.textContent = JSON.stringify({ '@context': 'https://schema.org', ...json });
+    document.head.append(script);
+  });
+}
+
+/**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
@@ -217,6 +276,12 @@ async function loadLazy(doc) {
 
   const main = doc.querySelector('main');
   await loadSections(main);
+  try {
+    addStructuredData();
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error('structured data failed', e);
+  }
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;

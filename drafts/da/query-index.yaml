@@ -1,6 +1,35 @@
 version: 1
 
 indices:
+  # Site-wide index: feeds /sitemap.xml. Pages with robots "noindex" are
+  # dropped from the sitemap because the robots property is indexed.
+  default:
+    include:
+      - /**
+    exclude:
+      - /nav
+      - /footer
+      - /modals/**
+      - /fragments/**
+      - /drafts/**
+      - /**.json
+    target: /query-index.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, "content")
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, "content")
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, "content")
+      robots:
+        select: head > meta[name="robots"]
+        value: attribute(el, "content")
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
   blogs:
     include:
       - /nutriverse/blogs/**

@@ -20,11 +20,12 @@ let open = 0;
  * @param {object} [opts]
  * @param {string} [opts.label] accessible name when the content has no heading
  * @param {string} [opts.name] extra class suffix: modal-<name>
+ * @param {HTMLElement} [opts.trigger] element to refocus on close (default: active element)
  * @returns {Promise<HTMLDialogElement>}
  */
 export async function createModal(nodes, opts = {}) {
+  const trigger = opts.trigger || document.activeElement;
   await loadCSS(CSS);
-  const trigger = document.activeElement;
   const dialog = document.createElement('dialog');
   dialog.className = 'modal-dialog';
   if (opts.name) dialog.classList.add(`modal-${opts.name}`);
@@ -77,6 +78,19 @@ export async function createModal(nodes, opts = {}) {
  * @param {string} path page path, e.g. /modals/request-sample
  */
 export async function openModal(path) {
+  // Safari does not focus links on click, so the active element is <body>;
+  // fall back to the link that points at this modal so focus returns to it
+  let trigger = document.activeElement;
+  if (!trigger || trigger === document.body) {
+    trigger = [...document.querySelectorAll('a[href*="/modals/"]')].find((a) => {
+      try {
+        const { pathname } = new URL(a.href, window.location.href);
+        return pathname === path && a.getClientRects().length > 0;
+      } catch {
+        return false;
+      }
+    }) || trigger;
+  }
   const fragment = await loadFragment(path);
   if (!fragment) {
     // eslint-disable-next-line no-console
@@ -84,7 +98,7 @@ export async function openModal(path) {
     return null;
   }
   const name = path.split('/').filter(Boolean).pop();
-  return createModal([...fragment.childNodes], { name });
+  return createModal([...fragment.childNodes], { name, trigger });
 }
 
 export default function decorate(block) {

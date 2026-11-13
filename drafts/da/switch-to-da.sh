@@ -14,13 +14,14 @@
 #     https://admin.hlx.page/config/akaspanion/sites/aem-eds-poc.json
 set -euo pipefail
 
-ORG=akaspanion
-SITE=aem-eds-poc
-DA_URL="https://content.da.live/${ORG}/${SITE}/"
-API="https://admin.hlx.page/config/${ORG}/sites/${SITE}.json"
 DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=/dev/null
 . "${DIR}/_env.sh"
+# target site: override with EDS_ORG / EDS_SITE in .env (e.g. the Cloud Manager site)
+ORG="${EDS_ORG:-akaspanion}"
+SITE="${EDS_SITE:-aem-eds-poc}"
+DA_URL="https://content.da.live/${ORG}/${SITE}/"
+API="https://admin.hlx.page/config/${ORG}/sites/${SITE}.json"
 BACKUP="${DIR}/site-config-backup.json"
 NEW="${DIR}/site-config-da.json"
 

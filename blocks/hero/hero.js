@@ -61,12 +61,14 @@ function buildBackground(desktop, mobile) {
     picture.append(fallback);
   }
   const img = document.createElement('img');
-  img.src = small.src;
   img.alt = desktop.alt || '';
   img.loading = 'eager';
   img.fetchPriority = 'high';
   img.decoding = 'async';
   picture.append(img);
+  // src last, once the img is inside the <picture>: WebKit starts fetching as soon as
+  // src is set, so an earlier src downloads the PNG fallback as well as the webp
+  img.src = small.src;
   return picture;
 }
 
@@ -123,7 +125,8 @@ function buildTab(row) {
   const brandEl = [...row.querySelectorAll('p, h2, h3, h4, h5, h6')]
     .find((el) => !el.querySelector('a, picture') && el.textContent.trim());
   const brandText = brandEl ? brandEl.textContent.trim() : '';
-  if (link) tab.setAttribute('aria-label', [label, brandText].filter(Boolean).join(' – '));
+  // no aria-label: the visible text ("Prohance® Request for Free Sample") is the
+  // accessible name, so speech users can say what they see (WCAG 2.5.3)
 
   const text = document.createElement('span');
   text.className = 'hero-tab-text';
@@ -153,13 +156,24 @@ function buildTab(row) {
   if (img) {
     const media = document.createElement('span');
     media.className = 'hero-tab-image';
+    // packshot is shown ~44px wide: small webp instead of the 750px PNG
+    const picture = document.createElement('picture');
+    const webp = imageUrl(img.src, 120, 'webp');
+    if (webp) {
+      const source = document.createElement('source');
+      source.type = 'image/webp';
+      source.srcset = `${webp} 1x, ${imageUrl(img.src, 240, 'webp')} 2x`;
+      picture.append(source);
+    }
     const tabImg = document.createElement('img');
-    tabImg.src = img.src;
-    tabImg.alt = img.alt || '';
+    // decorative inside the link: the brand text already names the product
+    tabImg.alt = link ? '' : (img.alt || '');
     tabImg.width = 120;
     tabImg.height = 120;
     tabImg.loading = 'lazy';
-    media.append(tabImg);
+    picture.append(tabImg);
+    tabImg.src = imageUrl(img.src, 240) || img.src; // after append (WebKit fetches on set)
+    media.append(picture);
     tab.append(media);
   }
   return tab;

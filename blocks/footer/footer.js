@@ -1,5 +1,6 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { buildPicture } from '../../scripts/prohance.js';
 
 /**
  * Footer (mirrors src/components/common/Footer.tsx). Content comes from the
@@ -39,6 +40,12 @@ export default async function decorate(block) {
   if (logo) {
     logo.className = 'footer-logo';
     logo.removeAttribute('title');
+    const img = logo.querySelector('img');
+    if (img) {
+      // the authored picture serves a 2000px logo for a 158px slot
+      const picture = buildPicture(img, { widths: [160, 320], sizes: '158px', alt: img.alt });
+      (img.closest('picture') || img).replaceWith(picture);
+    }
     if (!logo.getAttribute('aria-label')) logo.setAttribute('aria-label', 'Home');
     brand.append(logo);
   }
@@ -62,12 +69,19 @@ export default async function decorate(block) {
   cols.className = 'footer-columns';
   let col;
   [...(linksSec?.children || [])].forEach((el) => {
+    let node = el;
     if (/^H[1-6]$/.test(el.tagName)) {
       col = document.createElement('div');
       col.className = 'footer-column';
       cols.append(col);
+      // column titles are h2s whatever level was authored: the footer is its
+      // own landmark and must not skip levels after the page's h1
+      node = document.createElement('h2');
+      node.className = 'footer-heading';
+      if (el.id) node.id = el.id;
+      node.append(...el.childNodes);
     }
-    if (col) col.append(el);
+    if (col) col.append(node);
   });
   top.append(cols);
   inner.append(top);

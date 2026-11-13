@@ -8,11 +8,12 @@
 #   3. Publish the blog articles (upload.sh --publish) so they are indexed
 set -euo pipefail
 
-ORG=akaspanion
-SITE=aem-eds-poc
 DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=/dev/null
 . "${DIR}/_env.sh"
+# target site: override with EDS_ORG / EDS_SITE in .env (e.g. the Cloud Manager site)
+ORG="${EDS_ORG:-akaspanion}"
+SITE="${EDS_SITE:-aem-eds-poc}"
 
 : "${HLX_TOKEN:?Set HLX_TOKEN in .env or the shell (admin.hlx.page auth_token cookie)}"
 [ -f "${DIR}/query-index.yaml" ] || { echo "missing ${DIR}/query-index.yaml"; exit 1; }

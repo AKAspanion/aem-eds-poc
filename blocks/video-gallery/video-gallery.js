@@ -18,7 +18,7 @@ const RELATED_COUNT = 3;
  * Video player dialog. Self-contained (no block state): ready to move to
  * scripts/video-dialog.js and share with expert-perspectives. Class names are
  * `${prefix}`, `${prefix}-panel`, `-header`, `-eyebrow`, `-close`, `-media`,
- * `-desc`, `-extra`; the title is the header's <h3>.
+ * `-desc`, `-extra`; the title is the header's <h2>.
  * ---------------------------------------------------------------------- */
 
 function getYouTubeId(url) {
@@ -66,7 +66,7 @@ function createVideoDialog(host, prefix) {
     <div class="${prefix}-header">
       <div>
         <p class="${prefix}-eyebrow"></p>
-        <h3 id="${titleId}"></h3>
+        <h2 id="${titleId}"></h2>
       </div>
       <button type="button" class="${prefix}-close" aria-label="Close video">${CLOSE}</button>
     </div>
@@ -95,7 +95,7 @@ function createVideoDialog(host, prefix) {
     url, title, eyebrow, description, extra,
   }) => {
     setText($('eyebrow'), eyebrow);
-    dialog.querySelector('h3').textContent = title;
+    dialog.querySelector('h2').textContent = title;
     setText($('desc'), description);
     const player = createPlayer(url, title);
     $('media').replaceChildren(...(player ? [player] : []));
@@ -141,19 +141,51 @@ function parseVideo(row) {
   };
 }
 
-function createThumb(video, className, sizes) {
+function createThumb(video, className, sizes, eager = false) {
   if (video.img) {
-    return buildPicture(video.img, { widths: [480, 960], sizes, alt: '' });
+    return buildPicture(video.img, {
+      widths: [480, 960], sizes, alt: '', eager,
+    });
   }
   const img = document.createElement('img');
-  img.src = getYouTubeThumbnail(video.url);
   img.alt = '';
   img.width = 480;
   img.height = 360;
-  img.loading = 'lazy';
+  img.loading = eager ? 'eager' : 'lazy';
+  if (eager) img.fetchPriority = 'high';
   img.decoding = 'async';
   img.className = className;
+  img.src = getYouTubeThumbnail(video.url);
   return img;
+}
+
+/**
+ * Visible title that is also the control: a <button> (name = its text) whose
+ * ::after covers the whole card, so the card stays clickable without wrapping
+ * the heading or the thumbnail in the button.
+ */
+function createTitleButton(className, prefix, text) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = className;
+  const hidden = document.createElement('span');
+  hidden.className = 'sr-only';
+  hidden.textContent = prefix;
+  const label = document.createElement('span');
+  label.className = `${className}-text`;
+  label.textContent = text;
+  btn.append(hidden, label);
+  return btn;
+}
+
+/** Card title level: one below the nearest h1/h2 before the block. */
+function cardHeadingLevel(block) {
+  const before = [...document.querySelectorAll('main h1, main h2')]
+    .filter((h) => !block.contains(h)
+      // eslint-disable-next-line no-bitwise
+      && (h.compareDocumentPosition(block) & Node.DOCUMENT_POSITION_FOLLOWING));
+  const last = before.pop();
+  return last ? Math.min(Number(last.tagName[1]) + 1, 6) : 2;
 }
 
 function createRelated(videos, label, onSelect) {
@@ -165,10 +197,8 @@ function createRelated(videos, label, onSelect) {
   const list = document.createElement('div');
   list.className = 'video-gallery-related-list';
   videos.forEach((video) => {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'video-gallery-related-item';
-    btn.setAttribute('aria-label', `Play related video: ${video.title}`);
+    const item = document.createElement('div');
+    item.className = 'video-gallery-related-item';
     const thumb = document.createElement('span');
     thumb.className = 'video-gallery-related-thumb';
     thumb.append(createThumb(video, '', '256px'));
@@ -179,27 +209,23 @@ function createRelated(videos, label, onSelect) {
       dur.textContent = video.duration;
       thumb.append(dur);
     }
-    const title = document.createElement('span');
-    title.className = 'video-gallery-related-name';
-    title.textContent = video.title;
-    btn.append(thumb, title);
+    const btn = createTitleButton('video-gallery-related-name', 'Play related video: ', video.title);
     btn.addEventListener('click', () => onSelect(video));
-    list.append(btn);
+    item.append(thumb, btn);
+    list.append(item);
   });
   wrap.append(heading, list);
   return wrap;
 }
 
-function createCard(video, onOpen) {
-  const card = document.createElement('button');
-  card.type = 'button';
+function createCard(video, onOpen, level, eager) {
+  const card = document.createElement('div');
   card.className = 'video-gallery-card';
   card.dataset.category = toSlug(video.categories[0] || '');
-  card.setAttribute('aria-label', `Play video: ${video.title}`);
 
   const thumb = document.createElement('span');
   thumb.className = 'video-gallery-thumb';
-  thumb.append(createThumb(video, '', '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw'));
+  thumb.append(createThumb(video, '', '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw', eager));
   thumb.insertAdjacentHTML('beforeend', '<span class="video-gallery-shade"></span>');
   const [category] = video.categories;
   if (category) {
@@ -216,12 +242,13 @@ function createCard(video, onOpen) {
     thumb.append(dur);
   }
 
-  const title = document.createElement('h3');
+  const title = document.createElement(`h${level}`);
   title.className = 'video-gallery-title';
-  title.textContent = video.title;
+  const btn = createTitleButton('video-gallery-play-button', 'Play video: ', video.title);
+  btn.addEventListener('click', () => onOpen(video));
+  title.append(btn);
 
   card.append(thumb, title);
-  card.addEventListener('click', () => onOpen(video));
   return card;
 }
 
@@ -280,6 +307,10 @@ export default function decorate(block) {
 
   let player;
   let visible = [];
+  const level = cardHeadingLevel(block);
+  // the first card is the LCP candidate when the gallery is in the first section
+  const inFirstSection = block.closest('.section') === document.querySelector('main .section');
+  let firstRender = true;
 
   const openVideo = (video) => {
     const related = visible.filter((v) => v !== video).slice(0, RELATED_COUNT);
@@ -316,7 +347,10 @@ export default function decorate(block) {
     const inActive = (v) => !active || v.categories.some((c) => toSlug(c) === toSlug(active));
     const filtered = videos.filter(inActive);
     visible = filtered.slice(0, limit);
-    grid.replaceChildren(...visible.map((v) => createCard(v, openVideo)));
+    const eagerFirst = firstRender && inFirstSection;
+    grid.replaceChildren(...visible.map((v, i) => (
+      createCard(v, openVideo, level, eagerFirst && !i))));
+    firstRender = false;
     grid.hidden = !visible.length;
     empty.hidden = visible.length > 0;
     more.hidden = limit >= filtered.length;

@@ -12,6 +12,16 @@ function el(tag, className) {
   return node;
 }
 
+/** Card title level: one below the nearest h1/h2 before the block. */
+function cardHeadingLevel(block) {
+  const before = [...document.querySelectorAll('main h1, main h2')]
+    .filter((h) => !block.contains(h)
+      // eslint-disable-next-line no-bitwise
+      && (h.compareDocumentPosition(block) & Node.DOCUMENT_POSITION_FOLLOWING));
+  const last = before.pop();
+  return last ? Number(last.tagName[1]) + 1 : 2;
+}
+
 /* text pieces of a row in order: block children of cells, or bare cell text */
 function pieces(row) {
   const out = [];
@@ -29,6 +39,7 @@ function pieces(row) {
 }
 
 export default function decorate(block) {
+  const level = cardHeadingLevel(block);
   const cards = [...block.children].map((row) => {
     const iconSpan = row.querySelector('span.icon, img');
     const iconImg = iconSpan?.tagName === 'IMG' ? iconSpan : iconSpan?.querySelector('img');
@@ -53,7 +64,7 @@ export default function decorate(block) {
     }
     const headingIdx = parts.findIndex((p) => /^H\d$/.test(p.tagName));
     const [titleNode] = parts.splice(headingIdx > -1 ? headingIdx : 0, 1);
-    const title = el('h3', 'contact-info-title');
+    const title = el(`h${level}`, 'contact-info-title');
     title.append(...titleNode.childNodes);
     card.append(box, title);
     parts.forEach((p, i) => {

@@ -1,0 +1,26 @@
+# Prohance
+
+> Prohance is a nutrition brand offering supplements for daily strength, energy, immunity and metabolic health.
+
+This file is a curated reading list for AI assistants, not an exhaustive sitemap. Use it to answer questions about Prohance products, wellness topics and where to learn more.
+
+## Products
+- [Prohance](/products/prohance): everyday strength and energy supplement
+- [Prohance HP](/products/prohance-hp): higher protein variant for muscle and recovery
+- [Prohance DM](/products/prohance-dm): variant formulated for metabolic support
+
+## Nutriverse
+- [All blogs](/nutriverse/blogs): list of wellness articles, filterable by category
+- [Create Your Personalised Balanced Diet Chart](/nutriverse/blogs/create-your-personalize): wellness article (5 min read)
+- [The Food Pyramid: A Guide to Nutritional Balance](/nutriverse/blogs/the-food-pyramid-a-guide-to-nutritional-balance): wellness article (4 min read)
+- [Boost Your Health with Fibre-Rich Foods](/nutriverse/blogs/boost-your-health-with-fibre-rich-foods): wellness article (8 min read)
+- [How Many Calories Should I Eat a Day?](/nutriverse/blogs/how-many-calories-should-i-eat-a-day): wellness article (6 min read)
+- [How to Calculate Protein?](/nutriverse/blogs/how-to-calculate-protein): wellness article (5 min read)
+- [Recipes](/nutriverse/recipes)
+
+## Company
+- [About us](/about-us): brand story and mission
+- [Videos](/nutriverse/videos): expert nutrition videos
+
+## Optional
+- [Contact us](/contact-us): enquiries, partnerships and support requests

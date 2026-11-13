@@ -15,11 +15,12 @@
 # Tokens stay in your shell; nothing here stores them.
 set -uo pipefail
 
-ORG=akaspanion
-SITE=aem-eds-poc
 DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=/dev/null
 . "${DIR}/_env.sh"
+# target site: override with EDS_ORG / EDS_SITE in .env (e.g. the Cloud Manager site)
+ORG="${EDS_ORG:-akaspanion}"
+SITE="${EDS_SITE:-aem-eds-poc}"
 PUBLISH=false
 FILES=()
 
@@ -69,8 +70,17 @@ for f in "${FILES[@]}"; do
   type=text/html; [[ "$f" == *.json ]] && type=application/json
   path=$(web_path "$f")
   printf '%-45s' "$path"
+  # content references code-bus images on the POC host; point them at the target site
+  upload_src="$src"
+  POC_HOST="main--aem-eds-poc--akaspanion.aem.page"
+  TARGET_HOST="main--${SITE}--${ORG}.aem.page"
+  if [ "$POC_HOST" != "$TARGET_HOST" ]; then
+    upload_src="$(mktemp)"
+    sed "s|${POC_HOST}|${TARGET_HOST}|g" "$src" > "$upload_src"
+  fi
   code=$(curl -sS -o /dev/null -w '%{http_code}' -X PUT -H "Authorization: Bearer ${DA_TOKEN}" \
-    -F "data=@${src};type=${type}" "https://admin.da.live/source/${ORG}/${SITE}/${f}")
+    -F "data=@${upload_src};type=${type}" "https://admin.da.live/source/${ORG}/${SITE}/${f}")
+  [ "$upload_src" != "$src" ] && rm -f "$upload_src"
   if [[ "$code" =~ ^2 ]]; then printf ' upload ok'; else printf ' upload FAILED (%s)\n' "$code"; fail=1; continue; fi
   admin_call preview "$path"
   $PUBLISH && admin_call live "$path"

@@ -16,7 +16,7 @@ export default function decorate(block) {
   const img = block.querySelector('img');
   if (img) {
     inner.append(buildPicture(img, {
-      widths: [640, 850],
+      widths: [480, 640, 850],
       sizes: '(width >= 768px) 425px, 320px',
       eager: true,
     }));

@@ -103,23 +103,43 @@
   color: #fff;
 }
 
-/* card */
+/* card: the title's button covers the whole card (::after), so the heading
+   and thumbnail are not inside the button */
 .video-gallery .video-gallery-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
+  cursor: pointer;
+}
+
+.video-gallery :is(.video-gallery-play-button, .video-gallery-related-name) {
+  display: block;
   width: 100%;
   margin: 0;
   padding: 0;
   border: 0;
   background: none;
   color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
   text-align: left;
   cursor: pointer;
 }
 
-.video-gallery .video-gallery-card:focus-visible {
+.video-gallery :is(.video-gallery-play-button, .video-gallery-related-name)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.video-gallery :is(.video-gallery-play-button, .video-gallery-related-name):focus-visible {
   outline: none;
+}
+
+.video-gallery :is(.video-gallery-play-button, .video-gallery-related-name):focus-visible::after {
   box-shadow: 0 0 0 3px rgb(1 69 177 / 40%);
 }
 
@@ -168,7 +188,7 @@
   padding: 0.125rem 0.625rem;
   border: 1px solid rgb(255 255 255 / 50%);
   border-radius: 9999px;
-  background-color: oklch(63.7% 0.237 25.331deg);
+  background-color: #e7000b; /* red-600: 4.8:1 with white (red-500 was 3.8:1) */
   color: #fff;
   font-size: 10px;
   font-weight: 400;
@@ -177,12 +197,13 @@
   text-transform: uppercase;
 }
 
+/* darker than the original blue-400 / green-300 so white text reaches 4.5:1 */
 .video-gallery [data-category='prohance-dm'] .video-gallery-tag {
-  background-color: oklch(70.7% 0.165 254.624deg);
+  background-color: #155dfc;
 }
 
 .video-gallery [data-category='prohance-hp'] .video-gallery-tag {
-  background-color: oklch(87.1% 0.15 154.449deg);
+  background-color: #008236;
 }
 
 .video-gallery .video-gallery-play {
@@ -228,13 +249,16 @@
 }
 
 .video-gallery .video-gallery-title {
-  display: -webkit-box;
-  overflow: hidden;
   color: #0c121a;
   font-size: var(--text-sm);
   font-weight: 400;
   line-height: 19.25px;
   transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.video-gallery :is(.video-gallery-play-button-text, .video-gallery-related-name-text) {
+  display: -webkit-box;
+  overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
@@ -287,7 +311,7 @@
   text-transform: uppercase;
 }
 
-.video-gallery .video-gallery-modal-header h3 {
+.video-gallery .video-gallery-modal-header h2 {
   display: -webkit-box;
   margin: 0.25rem 0 0;
   overflow: hidden;
@@ -372,20 +396,10 @@
 }
 
 .video-gallery .video-gallery-related-item {
+  position: relative;
   flex: 0 1 33.3333%;
   min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  text-align: left;
   cursor: pointer;
-}
-
-.video-gallery .video-gallery-related-item:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgb(1 69 177 / 40%);
 }
 
 .video-gallery .video-gallery-related-thumb {
@@ -427,15 +441,11 @@
 }
 
 .video-gallery .video-gallery-related-name {
-  display: -webkit-box;
   margin-top: 0.5rem;
-  overflow: hidden;
   color: #262626;
   font-size: var(--text-xs);
   font-weight: 600;
   line-height: 1rem;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
 }
 
 .video-gallery .video-gallery-related-item:hover .video-gallery-related-name {
@@ -491,7 +501,7 @@
     padding: 1.5rem;
   }
 
-  .video-gallery .video-gallery-modal-header h3 {
+  .video-gallery .video-gallery-modal-header h2 {
     font-size: var(--text-2xl);
     line-height: 2rem;
   }

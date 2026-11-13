@@ -125,9 +125,9 @@ async function fetchArticleContent(path) {
 
 function featuredPicture(src, alt) {
   if (!src) return null;
-  const img = document.createElement('img');
-  img.src = src;
-  img.alt = alt;
+  // a plain object, not an <img>: setting src on a created <img> downloads it
+  // (the index image is a 1200px JPEG), even though only the picture is used
+  const img = { src, alt };
   return buildPicture(img, {
     widths: [400, 750, 1200],
     sizes: '(width < 640px) 100vw, (width < 1024px) 70vw, 744px',
@@ -300,8 +300,8 @@ function buildCard(entry, active, query) {
   if (active) a.setAttribute('aria-current', 'page');
   const thumb = el('div', 'blog-listing-thumb');
   if (entry.image) {
-    const img = document.createElement('img');
-    img.src = entry.image;
+    // plain object: a created <img> with a src would download the 1200px original
+    const img = { src: entry.image, alt: '' };
     thumb.append(buildPicture(img, { widths: [192], sizes: '96px', alt: '' }));
   }
   const text = el('div', 'blog-listing-card-text');
