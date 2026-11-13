@@ -18,6 +18,8 @@ set -uo pipefail
 ORG=akaspanion
 SITE=aem-eds-poc
 DIR="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=/dev/null
+. "${DIR}/_env.sh"
 PUBLISH=false
 FILES=()
 
@@ -28,7 +30,7 @@ for arg in "$@"; do
   esac
 done
 
-: "${DA_TOKEN:?Set DA_TOKEN to your da.live IMS access token}"
+: "${DA_TOKEN:?Set DA_TOKEN in .env or the shell (da.live IMS access token)}"
 
 if [ ${#FILES[@]} -eq 0 ]; then
   # nav and footer first so pages render with them on first preview

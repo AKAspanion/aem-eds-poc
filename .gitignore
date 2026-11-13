@@ -12,3 +12,6 @@ helix-importer-ui
 !CLAUDE.md
 !AGENTS.md
 drafts/da/site-config-*.json
+
+# local secrets for drafts/da scripts
+.env

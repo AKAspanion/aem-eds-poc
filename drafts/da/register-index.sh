@@ -11,8 +11,10 @@ set -euo pipefail
 ORG=akaspanion
 SITE=aem-eds-poc
 DIR="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=/dev/null
+. "${DIR}/_env.sh"
 
-: "${HLX_TOKEN:?Set HLX_TOKEN to your admin.hlx.page auth_token cookie}"
+: "${HLX_TOKEN:?Set HLX_TOKEN in .env or the shell (admin.hlx.page auth_token cookie)}"
 [ -f "${DIR}/query-index.yaml" ] || { echo "missing ${DIR}/query-index.yaml"; exit 1; }
 
 curl -sS -f -X POST -H "x-auth-token: ${HLX_TOKEN}" -H "Content-Type: text/yaml" \

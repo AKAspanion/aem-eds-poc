@@ -19,10 +19,12 @@ SITE=aem-eds-poc
 DA_URL="https://content.da.live/${ORG}/${SITE}/"
 API="https://admin.hlx.page/config/${ORG}/sites/${SITE}.json"
 DIR="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=/dev/null
+. "${DIR}/_env.sh"
 BACKUP="${DIR}/site-config-backup.json"
 NEW="${DIR}/site-config-da.json"
 
-: "${HLX_TOKEN:?Set HLX_TOKEN to your admin.hlx.page auth_token cookie}"
+: "${HLX_TOKEN:?Set HLX_TOKEN in .env or the shell (admin.hlx.page auth_token cookie)}"
 
 echo "Fetching current site config ..."
 curl -sS -f -H "x-auth-token: ${HLX_TOKEN}" "${API}" -o "${BACKUP}"
