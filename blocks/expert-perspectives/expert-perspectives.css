@@ -213,7 +213,7 @@
   font-size: var(--text-base);
   font-weight: 500;
   line-height: 1.375;
-  letter-spacing: normal;
+  letter-spacing: -0.02em;
 }
 
 .expert-perspectives .expert-perspectives-body p {

@@ -222,3 +222,10 @@ main:has(.about-hero) {
     max-width: 96rem;
   }
 }
+
+/* staging (-mt-14 + pb-20, justify-between) leaves 45px more under the hero on phones */
+@media (width < 768px) {
+  .about-hero {
+    padding-bottom: 2.8125rem;
+  }
+}

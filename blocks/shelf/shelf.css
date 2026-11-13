@@ -31,7 +31,7 @@
   font-size: var(--text-3xl);
   font-weight: 500;
   line-height: 2.5rem;
-  letter-spacing: normal;
+  letter-spacing: -0.02em;
   white-space: pre-line;
 }
 
@@ -265,7 +265,7 @@
   font-size: 22px;
   font-weight: 500;
   line-height: 1.5;
-  letter-spacing: normal;
+  letter-spacing: -0.02em;
   transition: color 0.15s;
 }
 

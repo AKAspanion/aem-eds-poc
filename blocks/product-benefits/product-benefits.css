@@ -128,7 +128,7 @@ body.prohance-hp .product-benefits {
   font-style: italic;
   font-weight: 400;
   line-height: 1.25;
-  letter-spacing: normal;
+  letter-spacing: -0.02em;
 }
 
 .product-benefits .product-benefits-body p {

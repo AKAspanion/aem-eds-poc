@@ -140,7 +140,7 @@ body.prohance-hp .product-steps {
   font-style: italic;
   font-weight: 400;
   line-height: 2rem;
-  letter-spacing: normal;
+  letter-spacing: -0.02em;
 }
 
 .product-steps .product-steps-body p {

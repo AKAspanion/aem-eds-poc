@@ -27,7 +27,7 @@
   font-size: var(--text-3xl);
   font-weight: 500;
   line-height: 1.25;
-  letter-spacing: normal;
+  letter-spacing: -0.02em;
 }
 
 .clinically-crafted .cc-title-line1 {

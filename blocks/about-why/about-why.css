@@ -24,7 +24,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.9375rem;
-  align-self: stretch;
+
+  /* staging shrink-wraps and centres the intro */
+  align-self: center;
 }
 
 .about-why .about-why-eyebrow {

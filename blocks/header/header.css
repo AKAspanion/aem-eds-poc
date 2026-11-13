@@ -6,42 +6,24 @@ header .nav-wrapper {
   background: transparent;
 }
 
+/* full-width bar flush with the top (staging commit 9708daa) */
 header nav {
   width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 16px;
-}
-
-@media (width >= 640px) {
-  header nav {
-    max-width: 640px;
-    padding: 16px 24px;
-  }
-}
-
-@media (width >= 768px) {
-  header nav { max-width: 768px; }
-}
-
-@media (width >= 1024px) {
-  header nav { max-width: 1024px; }
-}
-
-@media (width >= 1280px) {
-  header nav { max-width: 1280px; }
-}
-
-@media (width >= 1536px) {
-  header nav { max-width: 1536px; }
+  margin: 0;
+  padding: 0;
 }
 
 header .nav-glass {
   width: 100%;
-  border-radius: 16px;
+  border-radius: 0;
+  /* stylelint-disable-next-line property-no-vendor-prefix -- Safari 17 and older */
+  -webkit-backdrop-filter: blur(40px);
   backdrop-filter: blur(40px);
   overflow: hidden;
 }
+
+/* staging removed the glass gradient border */
+header .nav-glass::before { display: none; }
 
 @media (width >= 768px) {
   header .nav-glass { overflow: visible; }
@@ -52,7 +34,7 @@ header .nav-bar {
   align-items: center;
   justify-content: space-between;
   height: 64px;
-  margin-top: 8px;
+  margin: 0 auto;
   padding: 0 24px;
 }
 
@@ -61,6 +43,10 @@ header .nav-bar {
     height: 72px;
     padding: 0 32px;
   }
+}
+
+@media (width >= 1024px) {
+  header .nav-bar { padding: 0 104px; }
 }
 
 header .nav-start {
@@ -92,8 +78,8 @@ header .nav-hamburger button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border: 0;
   border-radius: 9999px;
   background: transparent;

@@ -78,12 +78,16 @@
   --gutter: 16px;
   --content-max: 80rem;
 
-  /* nav */
-  --nav-height: 96px;
+  /* nav: full-width header bar, 64px (72px from md) */
+  --nav-height: 64px;
 }
 
 @media (width >= 640px) {
   :root { --gutter: 32px; }
+}
+
+@media (width >= 768px) {
+  :root { --nav-height: 72px; }
 }
 
 @media (width >= 1024px) {

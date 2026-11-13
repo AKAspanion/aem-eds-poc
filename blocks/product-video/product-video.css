@@ -65,7 +65,7 @@ main > .section.product-video-container > div:last-child:not(.product-video-wrap
 @media (width >= 768px) {
   main > .section.product-video-container {
     display: grid;
-    grid-template-columns: clamp(320px, 46.3vw, 570px) minmax(0, 1fr);
+    grid-template-columns: clamp(320px, 45vw, 570px) minmax(0, 1fr);
     align-items: start;
   }
 

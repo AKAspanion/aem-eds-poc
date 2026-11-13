@@ -160,7 +160,7 @@
   font-size: var(--text-2xl);
   font-weight: 500;
   line-height: 1.3333;
-  letter-spacing: normal;
+  letter-spacing: -0.02em;
 }
 
 .nutriverse .nutriverse-card-bottom {
