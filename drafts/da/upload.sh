@@ -74,9 +74,21 @@ for f in "${FILES[@]}"; do
   upload_src="$src"
   POC_HOST="main--aem-eds-poc--akaspanion.aem.page"
   TARGET_HOST="main--${SITE}--${ORG}.aem.page"
-  if [ "$POC_HOST" != "$TARGET_HOST" ]; then
+  # forms: fill empty `Action` rows with the App Builder endpoint (FORMS_BASE_URL in .env,
+  # e.g. https://<namespace>.adobeioruntime.net/api/v1/web/prohance-forms)
+  form_action=""
+  case "$f" in
+    contact-us.html) form_action=contact ;;
+    modals/request-sample.html) form_action=trial-request ;;
+  esac
+  [ -z "${FORMS_BASE_URL:-}" ] && form_action=""
+  if [ "$POC_HOST" != "$TARGET_HOST" ] || [ -n "$form_action" ]; then
     upload_src="$(mktemp)"
     sed "s|${POC_HOST}|${TARGET_HOST}|g" "$src" > "$upload_src"
+    if [ -n "$form_action" ]; then
+      ACTION_URL="${FORMS_BASE_URL%/}/${form_action}" perl -0pi -e \
+        's{(<div>Action</div>\s*<div>)(</div>)}{$1$ENV{ACTION_URL}$2}g' "$upload_src"
+    fi
   fi
   code=$(curl -sS -o /dev/null -w '%{http_code}' -X PUT -H "Authorization: Bearer ${DA_TOKEN}" \
     -F "data=@${upload_src};type=${type}" "https://admin.da.live/source/${ORG}/${SITE}/${f}")

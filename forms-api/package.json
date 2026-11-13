@@ -1,0 +1,19 @@
+{
+  "name": "prohance-forms-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "App Builder actions that store Prohance site form submissions as AEM Content Fragments",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "deploy": "aio app deploy",
+    "dev": "aio app dev"
+  },
+  "dependencies": {
+    "@adobe/aem-headless-client-nodejs": "^2.0.1",
+    "@adobe/aio-lib-state": "^5.4.0",
+    "zod": "^4.1.0"
+  }
+}
