@@ -25,7 +25,18 @@ post() { # path content-type file
 }
 
 post content/query.yaml text/yaml "${DIR}/query-index.yaml"
-post content/sitemap.yaml text/yaml "${DIR}/sitemap.yaml"
+
+# sitemap origin: the production host once known, else the aem.live host
+# (without one, URLs come out as https://undefined/...)
+if [ -n "${PROD_HOST:-}" ]; then
+  origin="${PROD_HOST#https://}"; origin="${origin#http://}"; origin="https://${origin%/}"
+else
+  origin="https://main--${SITE}--${ORG}.aem.live"
+fi
+SITEMAP="$(mktemp)"
+sed "s|^  default:$|  default:\n    origin: ${origin}|" "${DIR}/sitemap.yaml" > "$SITEMAP"
+post content/sitemap.yaml text/yaml "$SITEMAP"
+rm -f "$SITEMAP"
 
 ROBOTS="$(mktemp)"
 {
@@ -52,6 +63,11 @@ for p in "${paths[@]}"; do
   printf 'index %-60s %s\n' "$p" "$code"
 done
 
-code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST "${AUTH[@]}" "https://admin.hlx.page/sitemap/${ORG}/${SITE}/main/sitemap.xml")
-echo "sitemap rebuild: $code"
+# the index is written asynchronously; retry the rebuild until it is there
+for attempt in 1 2 3 4 5 6; do
+  code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST "${AUTH[@]}" "https://admin.hlx.page/sitemap/${ORG}/${SITE}/main/sitemap.xml")
+  [ "$code" = 200 ] && break
+  sleep 10
+done
+echo "sitemap rebuild: $code (origin ${origin})"
 echo "Check: https://main--${SITE}--${ORG}.aem.live/sitemap.xml"
