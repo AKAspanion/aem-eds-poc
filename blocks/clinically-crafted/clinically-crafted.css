@@ -205,7 +205,7 @@
     font-size: var(--text-lg);
   }
 
-  .clinically-crafted .cc-viewport {
+  .clinically-crafted .cc-slide img {
     max-height: 35rem;
   }
 
@@ -233,13 +233,14 @@
     padding-block: 5rem 3rem;
   }
 
-  .clinically-crafted .cc-viewport {
-    max-height: 43rem;
+  /* Figma diagram is 1152x736 */
+  .clinically-crafted .cc-slide img {
+    max-height: 46rem;
   }
 }
 
 @media (width >= 1536px) {
-  .clinically-crafted .cc-viewport {
+  .clinically-crafted .cc-slide img {
     max-height: 60rem;
   }
 }
