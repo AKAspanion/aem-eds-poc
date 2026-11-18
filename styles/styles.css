@@ -5,7 +5,7 @@
 
 :root {
   /* brand */
-  --color-primary: #0145b1;
+  --color-primary: #0047bb;
   --color-primary-hover: #004494;
   --color-charcoal: #222;
   --color-muted-blue: #5f7fa3;
@@ -74,9 +74,9 @@
   --text-5xl: 3rem;
   --text-6xl: 3.75rem;
 
-  /* page gutters: px-4 / sm:px-8 / lg:px-16 / xl:px-28 */
+  /* page gutters: 16 / 32 (sm) / 64 (lg) / 82 (xl); Figma content is 1276px at x82 on a 1440px frame */
   --gutter: 16px;
-  --content-max: 80rem;
+  --content-max: 79.75rem;
 
   /* nav: full-width header bar, 64px (72px from md) */
   --nav-height: 64px;
@@ -95,7 +95,7 @@
 }
 
 @media (width >= 1280px) {
-  :root { --gutter: 112px; }
+  :root { --gutter: 82px; }
 }
 
 /* fallback font keeps layout stable until Neurial Grotesk loads */
