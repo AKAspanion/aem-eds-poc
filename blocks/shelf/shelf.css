@@ -4,7 +4,8 @@
   --shelf-accent: var(--color-accent-teal);
   --shelf-accent-from: var(--color-accent-gradient-blue);
   --shelf-light: var(--color-accent-teal-light);
-  --shelf-border: var(--color-accent-teal-border);
+  --shelf-pill-bg: #edfbfa;
+  --shelf-border: #bef0eb;
   --shelf-badge: var(--color-accent-teal);
   --shelf-shadow-rgb: 0 155 134;
 
@@ -132,7 +133,8 @@
   --shelf-accent: var(--color-accent-blue);
   --shelf-accent-from: var(--color-accent-gradient-light);
   --shelf-light: var(--color-accent-blue-light);
-  --shelf-border: var(--color-accent-blue-border);
+  --shelf-pill-bg: #f1f6fd;
+  --shelf-border: rgb(65 143 222 / 20%);
   --shelf-badge: #0047bbb2;
   --shelf-shadow-rgb: 0 86 179;
 }
@@ -141,7 +143,8 @@
   --shelf-accent: var(--color-accent-coral);
   --shelf-accent-from: var(--color-accent-gradient-red);
   --shelf-light: var(--color-accent-coral-light);
-  --shelf-border: var(--color-accent-coral-border);
+  --shelf-pill-bg: #fdf5f6;
+  --shelf-border: rgb(255 109 106 / 20%);
   --shelf-badge: #e10600b2;
   --shelf-shadow-rgb: 225 57 45;
 }
@@ -297,14 +300,14 @@
 }
 
 .shelf .shelf-features li {
-  padding: 0.25rem 0.75rem;
+  padding: 6px 12px; /* Figma 7x13 with the 1px border drawn inside */
   border: 1px solid var(--shelf-border);
   border-radius: 9999px;
-  background-color: var(--shelf-light);
+  background-color: var(--shelf-pill-bg);
   color: var(--shelf-accent);
-  font-size: var(--text-xs);
+  font-size: var(--text-base);
   font-weight: 500;
-  line-height: 1.3333;
+  line-height: normal;
 }
 
 .shelf .shelf-divider {
@@ -381,10 +384,6 @@
   .shelf .shelf-flavor {
     font-size: var(--text-sm);
   }
-
-  .shelf .shelf-features li {
-    padding: 0.375rem 1.25rem;
-  }
 }
 
 @media (width >= 768px) {
@@ -408,5 +407,14 @@
     gap: 1rem;
     margin-inline: 0;
     box-shadow: 0 35px 40px -20px rgb(var(--shelf-shadow-rgb) / 40%);
+  }
+}
+
+/* 3 narrow columns on tablet: compact pills until the cards widen */
+@media (width >= 768px) and (width < 1024px) {
+  .shelf .shelf-features li {
+    padding: 0.25rem 0.75rem;
+    font-size: var(--text-xs);
+    line-height: 1.3333;
   }
 }
